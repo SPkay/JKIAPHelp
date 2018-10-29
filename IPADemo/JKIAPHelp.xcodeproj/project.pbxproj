@@ -25,6 +25,7 @@
 		3CC2BDCE211AD8C200806B89 /* JKIAPTransactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2BDCC211AD8C200806B89 /* JKIAPTransactionModel.m */; };
 		3CC2BDD1211AED5300806B89 /* JKIAPConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CC2BDCF211AED5300806B89 /* JKIAPConfig.h */; };
 		3CC2BDD2211AED5300806B89 /* JKIAPConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC2BDD0211AED5300806B89 /* JKIAPConfig.m */; };
+		3CEEB2922186DC1B0076FFAD /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CEEB2912186DC1B0076FFAD /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		3CC2BDCC211AD8C200806B89 /* JKIAPTransactionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKIAPTransactionModel.m; sourceTree = "<group>"; };
 		3CC2BDCF211AED5300806B89 /* JKIAPConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKIAPConfig.h; sourceTree = "<group>"; };
 		3CC2BDD0211AED5300806B89 /* JKIAPConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKIAPConfig.m; sourceTree = "<group>"; };
+		3CEEB2912186DC1B0076FFAD /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CEEB2922186DC1B0076FFAD /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +69,7 @@
 			children = (
 				3C697EA521194D3600DACD60 /* JKIAPHelp */,
 				3C697EA421194D3600DACD60 /* Products */,
+				3CEEB2902186DC1B0076FFAD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -109,6 +113,14 @@
 				3C7160B72125534500B56F2E /* SAMKeychainQuery.h */,
 			);
 			path = ThirdPath;
+			sourceTree = "<group>";
+		};
+		3CEEB2902186DC1B0076FFAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3CEEB2912186DC1B0076FFAD /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
