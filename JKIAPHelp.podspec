@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "JKIAPHelp"
-  s.version      = "0.0.1"
+  s.version      = "1.0.0"
   s.summary      = "AppleIap,iap,IAP"
 
   # This description is used to generate tags and improve search results.
@@ -80,7 +80,7 @@ apple in app price help
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/SPkay/JKIAPHelp/JKIAPHelp.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/SPkay/JKIAPHelp.git", :tag => s.version }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -91,7 +91,7 @@ apple in app price help
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "JKIAPHelp/**/*.{h,m}"
+  s.source_files  = "JKIAPHelp/JKIAPHelp/**/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
