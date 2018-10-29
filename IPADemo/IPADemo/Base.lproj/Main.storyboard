@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.15" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.9"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HYs-pn-CTM">
+                                <rect key="frame" x="130" y="44" width="35" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="aqW-SD-Oc7"/>
+                                </constraints>
+                                <state key="normal" title="登录"/>
+                                <state key="selected" title="登出">
+                                    <color key="titleColor" red="0.99556106328964233" green="0.0" blue="0.16394644975662231" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="buyAction1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CSH-xJ-bJ4"/>
+                                    <action selector="loginBtnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NI7-pL-xUW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbd-8G-gII">
+                                <rect key="frame" x="297" y="94" width="62" height="30"/>
+                                <state key="normal" title="恢复购买"/>
+                                <connections>
+                                    <action selector="restore:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PmE-tM-snf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r01-Pc-DBS">
+                                <rect key="frame" x="142" y="94" width="108" height="30"/>
+                                <state key="normal" title="购买非消耗物品"/>
+                                <connections>
+                                    <action selector="buyAction2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="T9D-4t-4m6"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="账号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0K-yV-25S">
+                                <rect key="frame" x="10" y="44" width="100" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="3SV-uY-Wl6"/>
+                                    <constraint firstAttribute="height" constant="30" id="BXl-5s-fpJ"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m75-LP-AxA">
+                                <rect key="frame" x="20" y="94" width="92" height="30"/>
+                                <state key="normal" title="购买消耗物品"/>
+                                <connections>
+                                    <action selector="buyAction1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gbC-o9-q2K"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gBK-Nb-mOm">
+                                <rect key="frame" x="0.0" y="144" width="375" height="634"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Gix-Yx-8U1"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="31U-Nx-9zo"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S73-Ub-BMO">
+                                <rect key="frame" x="267" y="44" width="92" height="30"/>
+                                <state key="normal" title="删除所有订单"/>
+                                <connections>
+                                    <action selector="deletedAll:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ndd-qp-1k4"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="m75-LP-AxA" firstAttribute="top" secondItem="HYs-pn-CTM" secondAttribute="bottom" constant="20" id="3bu-7f-E9R"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="gBK-Nb-mOm" secondAttribute="bottom" id="5KH-5G-zB5"/>
+                            <constraint firstItem="gBK-Nb-mOm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6K2-xy-FOg"/>
+                            <constraint firstItem="m75-LP-AxA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Eqh-qJ-9X9"/>
+                            <constraint firstItem="HYs-pn-CTM" firstAttribute="leading" secondItem="v0K-yV-25S" secondAttribute="trailing" constant="20" id="K2w-MA-oJd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hbd-8G-gII" secondAttribute="trailing" constant="16" id="KUE-lI-ayG"/>
+                            <constraint firstItem="r01-Pc-DBS" firstAttribute="top" secondItem="S73-Ub-BMO" secondAttribute="bottom" constant="20" id="Lr6-aA-Aia"/>
+                            <constraint firstItem="gBK-Nb-mOm" firstAttribute="top" secondItem="hbd-8G-gII" secondAttribute="bottom" constant="20" id="MhL-3H-XgD"/>
+                            <constraint firstItem="hbd-8G-gII" firstAttribute="top" secondItem="S73-Ub-BMO" secondAttribute="bottom" constant="20" id="O1O-jb-Qjj"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="S73-Ub-BMO" secondAttribute="trailing" constant="16" id="Ss8-Ya-4zg"/>
+                            <constraint firstItem="v0K-yV-25S" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Z7O-B2-mf7"/>
+                            <constraint firstItem="HYs-pn-CTM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="fjx-Oc-Unv"/>
+                            <constraint firstItem="v0K-yV-25S" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="gEn-gN-j2K"/>
+                            <constraint firstItem="S73-Ub-BMO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ior-J6-4Ve"/>
+                            <constraint firstItem="r01-Pc-DBS" firstAttribute="leading" secondItem="m75-LP-AxA" secondAttribute="trailing" constant="30" id="kGf-JF-Lla"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gBK-Nb-mOm" secondAttribute="trailing" id="wqW-Lu-EVw"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="accountField" destination="v0K-yV-25S" id="p18-E1-hao"/>
+                        <outlet property="logTableView" destination="gBK-Nb-mOm" id="aQo-Aj-ub7"/>
+                        <outlet property="loginBtn" destination="HYs-pn-CTM" id="WOa-ko-x5h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="39.375" y="25.35211267605634"/>
+        </scene>
+    </scenes>
+</document>
