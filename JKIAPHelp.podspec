@@ -94,7 +94,7 @@ apple in app price help
   s.source_files  = "JKIAPHelp/*"
   #s.exclude_files = "Classes/Exclude"
 
-  # s.public_header_files = "JKIAPManager.h"
+   s.public_header_files = "JKIAPHelp/*.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

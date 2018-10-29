@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import <JKIAPHelp/JKIAPHelp.h>
+#import "JKIAPHelp.h"
 
 //沙盒测试环境验证
 #define SandBoxURL @"https://sandbox.itunes.apple.com/verifyReceipt"
@@ -114,7 +114,7 @@
           
           
         }else{
-            NSString *log =[NSString stringWithFormat:@"本地验证苹果凭证失败:%d",appleCode];
+            NSString *log =[NSString stringWithFormat:@"本地验证苹果凭证失败:%ld",(long)appleCode];
             NSLog(@"%@",log);
             [self JKIAPLog:log];
              resultAction(JKIAPVerifyInvalid);
@@ -131,7 +131,7 @@
 }
 
 - (IBAction)deletedAll:(id)sender {
-    [[JKIAPVerifyManager new] cleanAllModels];
+   // [[JKIAPVerifyManager new] cleanAllModels];
 }
 
 

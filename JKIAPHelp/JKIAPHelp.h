@@ -17,7 +17,11 @@ FOUNDATION_EXPORT const unsigned char JKIAPHelpVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <JKIAPHelp/PublicHeader.h>
 
-#import <JKIAPHelp/JKIAPManager.h>
-#import <JKIAPHelp/JKIAPTransactionModel.h>
-#import <JKIAPHelp/JKIAPPayDelegate.h>
-#import <JKIAPHelp/JKIAPVerifyManager.h>
+//#import <JKIAPHelp/JKIAPManager.h>
+//#import <JKIAPHelp/JKIAPTransactionModel.h>
+//#import <JKIAPHelp/JKIAPPayDelegate.h>
+//#import <JKIAPHelp/JKIAPVerifyManager.h>
+#import "JKIAPManager.h"
+#import "JKIAPTransactionModel.h"
+#import "JKIAPPayDelegate.h"
+
