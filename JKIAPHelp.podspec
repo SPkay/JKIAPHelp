@@ -91,10 +91,10 @@ apple in app price help
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "JKIAPHelp/JKIAPHelp/**/*.{h,m}"
-  s.exclude_files = "Classes/Exclude"
+  s.source_files  = "JKIAPHelp/*"
+  #s.exclude_files = "Classes/Exclude"
 
-  # s.public_header_files = "Classes/**/*.h"
+  # s.public_header_files = "JKIAPManager.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
