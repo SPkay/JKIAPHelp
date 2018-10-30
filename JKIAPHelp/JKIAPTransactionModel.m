@@ -35,7 +35,7 @@ NSUInteger const kJKIAPPaymentTransactionModelVerifyWarningCount = 20; // 最多
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
     NSString *dateString = [formatter stringFromDate:self.transactionDate];
-    return [NSString stringWithFormat:@"productIdentifier: %@, transactionIdentifier: %@, transactionDate: %@, orderNo:%@,  priceTagString: %@, transactionStatus: %d,userId:%@", self.productIdentifier, self.transactionIdentifier, dateString, self.seriverOrder, self.priceString, self.transactionStatus,self.userId];
+    return [NSString stringWithFormat:@"productIdentifier: %@, transactionIdentifier: %@, transactionDate: %@, orderNo:%@,  priceTagString: %@, transactionStatus: %lu,userId:%@", self.productIdentifier, self.transactionIdentifier, dateString, self.seriverOrder, self.priceString, (unsigned long)self.transactionStatus,self.userId];
 }
 
 

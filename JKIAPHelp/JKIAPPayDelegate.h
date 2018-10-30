@@ -75,20 +75,34 @@ typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
  */
 -(void)onDistributeGoodsFinish:(JKIAPTransactionModel*)model;
 
-//发货失败回调(业务错误)
-//如果code=10001 则需要补发,其他错误则不需要
+
+/**
+ 发货失败
+
+ @param model 交易模型
+ @param error 错误信息
+ */
 -(void)onDistributeGoodsFailue:(JKIAPTransactionModel*)model withError:(NSError *)error;
 
 
 /*******************补发回调用********************/
 
-//补发货成功回调
+/**
+ 补发货成功回调
+
+ @param model 交易模型
+ */
 -(void)onRedistributeGoodsFinish:(JKIAPTransactionModel*)model;
 
-//补发货失败回调
+
+/**
+ 补发货失败回调
+
+ @param model 交易模型
+ @param error 错误信息
+ */
 -(void)onRedistributeGoodsFailue:(JKIAPTransactionModel*)model withError:(NSError *)error;
 
-/*******************补发回调用********************/
 
 - (void)JKIAPLog:(NSString *)log;
 @end

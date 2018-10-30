@@ -9,18 +9,10 @@
 #import <UIKit/UIKit.h>
 
 
-//! Project version number for JKIAPHelp.
-FOUNDATION_EXPORT double JKIAPHelpVersionNumber;
-
 //! Project version string for JKIAPHelp.
 FOUNDATION_EXPORT const unsigned char JKIAPHelpVersionString[];
+const unsigned char JKIAPHelpVersionString[] = "0.1";
 
-// In this header, you should import all the public headers of your framework using statements like #import <JKIAPHelp/PublicHeader.h>
-
-//#import <JKIAPHelp/JKIAPManager.h>
-//#import <JKIAPHelp/JKIAPTransactionModel.h>
-//#import <JKIAPHelp/JKIAPPayDelegate.h>
-//#import <JKIAPHelp/JKIAPVerifyManager.h>
 #import "JKIAPManager.h"
 #import "JKIAPTransactionModel.h"
 #import "JKIAPPayDelegate.h"

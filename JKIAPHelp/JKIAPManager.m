@@ -177,7 +177,6 @@ static  JKIAPManager *manager = nil;
 
 
 #pragma mark - IAP
-//withProductType:(AppproductType)productType
 /**
  * 获取产品信息.
  *
@@ -332,10 +331,10 @@ static  JKIAPManager *manager = nil;
 
 #pragma mark - SKProductsRequestDelegate
 -(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response{
-    JKIAPLog(@"-----------收到产品反馈信息--------------");
+    JKIAPLog(@"-----------Receive Products Response--------------");
     NSArray *products =response.products;
 
-    JKIAPLog(@"产品付费数量: %d", (int)[products count]);
+    JKIAPLog(@"products count: %d", (int)[products count]);
     if (!_isBuyProdutTofetchList) {
         self.isPaying = NO;
         _isBuyProdutTofetchList = NO;
@@ -348,9 +347,9 @@ static  JKIAPManager *manager = nil;
     NSInteger price = 0;
     for (SKProduct *p in products) {
         JKIAPLog(@"product info");
-        JKIAPLog(@"产品标题 %@" , p.localizedTitle);
-        JKIAPLog(@"产品描述信息: %@" , p.localizedDescription);
-        JKIAPLog(@"价格: %@" , p.price);
+        JKIAPLog(@"Title %@" , p.localizedTitle);
+        JKIAPLog(@"Description: %@" , p.localizedDescription);
+        JKIAPLog(@"Price: %@" , p.price);
         JKIAPLog(@"Product id: %@" , p.productIdentifier);
         price =p.price.integerValue;
         if ([p.productIdentifier isEqualToString:_productIdentifier]) {
@@ -368,11 +367,11 @@ static  JKIAPManager *manager = nil;
        
         NSArray *order = @[_appOrderID,@(price)];
         payment.applicationUsername = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:order options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
-          JKIAPLog(@"开始进行购买: %@,%@" , payment.productIdentifier,payment.applicationUsername);
+          JKIAPLog(@"Begin pay: %@,%@" , payment.productIdentifier,payment.applicationUsername);
         [[SKPaymentQueue defaultQueue] addPayment:payment];
         
     }else{
-          error = [NSError errorWithDomain:JKIAPErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey : @"没有购买的物品"}];
+          error = [NSError errorWithDomain:JKIAPErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey : @"None Products"}];
         if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
             [self.delegate onIAPPayFailue:nil withError:error];
         }
@@ -401,7 +400,7 @@ static  JKIAPManager *manager = nil;
             }
                 break;
             case SKPaymentTransactionStateRestored:{
-                JKIAPLog(@"IAP_恢复购买");
+                JKIAPLog(@"IAP_TransactionStateRestored");
                 self.isPaying = NO;
                 [[SKPaymentQueue defaultQueue] finishTransaction:tran];
             }
@@ -440,7 +439,7 @@ static  JKIAPManager *manager = nil;
        
         return;
     }
-    JKIAPLog(@"IAP_购买完成,向自己的服务器验证 ---- %@,paying:%d", orderId,self.isPaying);
+    JKIAPLog(@"IAP_Success,SeriverVerifing ---- %@,paying:%d", orderId,self.isPaying);
 
        if (_currentModel && [orderId isEqualToString:_currentModel.seriverOrder]) {
            
@@ -466,7 +465,7 @@ static  JKIAPManager *manager = nil;
     
     
     NSString *order = tran.payment.applicationUsername;
-    JKIAPLog(@"IAP_商品添加进列表,username:%@",order);
+    JKIAPLog(@"IAP_TransactionStatePurchasing,username:%@",order);
     NSString* payAmount =@"";
     NSString *orderId = @"";
     if (order) {
@@ -485,7 +484,7 @@ static  JKIAPManager *manager = nil;
 
 - (void)endFailedTransaction:(SKPaymentTransaction *)tran{
     NSString *order = tran.payment.applicationUsername;
-    JKIAPLog(@"IAP_交易失败,order:%@,error:%@", order,tran.error);
+    JKIAPLog(@"IAP_TransactionFailed,order:%@,error:%@", order,tran.error);
     JKIAPTransactionModel *currentModel= _currentModel;
     if (!_currentModel) {
         NSString* payAmount =@"";
@@ -576,7 +575,7 @@ static  JKIAPManager *manager = nil;
         JKIAPLog(errorString);
         [self.verifyManager updatePaymentTransactionModelStatus:model];
     }else {
-        JKIAPLog(@"准备删除储存订单:%@",model.seriverOrder);
+        JKIAPLog(@"Try DeletePaymentModelNum :%@",model.seriverOrder);
         if (self.isPaying && _currentModel) {
             self.isPaying = NO;
             _currentModel=nil;
@@ -601,7 +600,7 @@ static  JKIAPManager *manager = nil;
     
     if (!transactionModel.appStoreReceipt) {
         
-        NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey:@"无本地票据"}];
+        NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey:@"No AppStoreReceipt"}];
         if (self.isPaying && [self.delegate respondsToSelector:@selector(onDistributeGoodsFailue:withError:)]) {
             [self.delegate onDistributeGoodsFailue:transactionModel withError:error];
         }else  if (!self.isPaying && [self.delegate respondsToSelector:@selector(onRedistributeGoodsFailue:withError:)]) {
@@ -620,7 +619,7 @@ static  JKIAPManager *manager = nil;
     if (self.delegate && [self.delegate respondsToSelector:@selector(verifyWithModel:resultAction:)]) {
         [self.delegate verifyWithModel:transactionModel resultAction:^(JKIAPVerifyResult result) {
             [[NSNotificationCenter defaultCenter] postNotificationName:JKIAPVerifyNotification object:nil];
-            JKIAPLog(@"验证回调:resutl:%d,订单号%@",result,transactionModel.seriverOrder);
+            JKIAPLog(@"VerifyResponds:resutl:%d,OrderNum%@",result,transactionModel.seriverOrder);
             switch (result) {
                 case JKIAPVerifyValid:
                 {

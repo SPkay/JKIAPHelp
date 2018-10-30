@@ -76,11 +76,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cleanAllModels;
 
 
-
-/**
- 检测苹果支付完成未验证的订单
- */
-- (void)checkUnfinishedTransaction;
 @end
 
 NS_ASSUME_NONNULL_END

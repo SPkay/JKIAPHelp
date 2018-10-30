@@ -96,7 +96,6 @@ const char* jailbreak_tool_pathes[] = {
 
 /**
  * 判断cydia的URL scheme.
- * URL scheme是可以用来在应用中呼出另一个应用，是一个资源的路径（详见《iOS中如何呼出另一个应用》），这个方法也就是在判定是否存在cydia这个应用。
  */
 + (BOOL)detectJailBreakByCydiaPathExisted {
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {

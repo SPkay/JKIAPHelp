@@ -214,10 +214,4 @@
     
 }
 
-- (void)checkUnfinishedTransaction{
-    
-   
-   
-   
-}
 @end

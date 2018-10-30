@@ -53,7 +53,7 @@
 - (void)stop{
     dispatch_async(dispatch_get_main_queue(), ^{
 
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.2 animations:^{
             self->_backView.alpha = 0;
         } completion:^(BOOL finished) {
             [self->_backView removeFromSuperview];

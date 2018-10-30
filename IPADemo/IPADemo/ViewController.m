@@ -229,6 +229,25 @@
         }
     });
 }
+
+#pragma mark *** tableView delegate ***
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.logArray.count;
+}
+
+static NSString *const kReUsableCellIdentifier= @"cellIdentifier";
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:kReUsableCellIdentifier];
+    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kReUsableCellIdentifier];
+        cell.textLabel.font = [UIFont systemFontOfSize:12];
+        cell.textLabel.numberOfLines =0;
+    }
+    cell.textLabel.text = self.logArray[indexPath.row];
+    return cell;
+}
 - (void)tableViewScollToBottomWithAnimated:(BOOL)animated{
     NSInteger lastRowIndex = [self.logTableView numberOfRowsInSection:0] - 1;
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -314,53 +333,9 @@
 }
 
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.logArray.count;
-}
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//
-//
-//        CGSize size = [self textBoundingRectWithString:self.logArray[indexPath.row] maxHeight:0 maxWidth:([UIScreen mainScreen].bounds.size.width/2-30) textFont:[UIFont systemFontOfSize:12]];
-//        return size.height;
-//
-//}
-static NSString *const kReUsableCellIdentifier= @"cellIdentifier";
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [tableView  dequeueReusableCellWithIdentifier:kReUsableCellIdentifier];
-    
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kReUsableCellIdentifier];
-        cell.textLabel.font = [UIFont systemFontOfSize:12];
-        cell.textLabel.numberOfLines =0;
-    }
-    cell.textLabel.text = self.logArray[indexPath.row];
-    return cell;
-}
 
 
--(CGSize)textBoundingRectWithString:(NSString *)string maxHeight:(CGFloat)maxHeight maxWidth:(CGFloat)maxWidth textFont:(UIFont *)textFont
-{
-    if (!textFont) {
-        return CGSizeMake(0, 0);
-    }
-    if (string == nil || string.length <= 0 ||[string isKindOfClass:[NSNull class]] || ![string isKindOfClass:[NSString class]] || [[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length]==0) {
-        return CGSizeMake(0, 0);
-    }else
-    {
-        if (maxHeight == 0) {
-            CGSize size = [string boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textFont} context:nil].size;
-            CGSize lastSize = CGSizeMake(ceilf(size.width), ceilf(size.height));
-            return lastSize;
-        }else
-        {
-            CGSize size = [string boundingRectWithSize:CGSizeMake(maxWidth, maxHeight) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textFont} context:nil].size;
-            CGSize lastSize = CGSizeMake(ceilf(size.width), ceilf(size.height));
-            return lastSize;
-        }
-    }
-}
+
 
 
 @end

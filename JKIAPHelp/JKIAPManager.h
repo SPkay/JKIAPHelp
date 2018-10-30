@@ -81,9 +81,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unRegisterPay;
 
 
-
-
-//withProductType:(AppproductType)productType
 /**
  * 获取产品信息.
  *
@@ -113,12 +110,12 @@ NS_ASSUME_NONNULL_BEGIN
                                 orderId:(NSString *)orderId ;
 
 /**
- 购买物品(苹果购买完成后再生成订单)
+ 购买物品(苹果购买完成后再生成订单,建设中)
 
  @param productIdentifier 物品标识
  @param appproductType 物品类型
  */
-- (void)buyProductWithProductIdentifier:(NSString *)productIdentifier appproductType:( AppleProductType)appproductType;
+//- (void)buyProductWithProductIdentifier:(NSString *)productIdentifier appproductType:( AppleProductType)appproductType;
 
 
 
