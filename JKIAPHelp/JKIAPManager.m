@@ -139,7 +139,10 @@ static  JKIAPManager *manager = nil;
  * @param userid 用户 ID.
  */
 - (void)registerPayWithUserID:(NSString *)userid{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
     [self registerPayWithUserID:userid keychainService:nil keychainAccount:nil];
+#pragma clang diagnostic pop
 }
 - (void)registerPayWithUserID:(NSString *)userid
               keychainService:(NSString *)keychainService
