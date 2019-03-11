@@ -75,7 +75,7 @@ typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
  */
 -(void)onDistributeGoodsFinish:(JKIAPTransactionModel*)model;
 
-//发货失败回调(业务错误)
+//发货失败回调
 -(void)onDistributeGoodsFailue:(JKIAPTransactionModel*)model withError:(NSError *)error;
 
 
@@ -89,6 +89,13 @@ typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
 
 /***************************************/
 
+
+
+/**
+ 输出日志
+
+ @param log 日志信息
+ */
 - (void)JKIAPLog:(NSString *)log;
 @end
 

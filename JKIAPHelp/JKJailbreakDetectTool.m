@@ -44,7 +44,6 @@
  * /Library/MobileSubstrate/MobileSubstrate.dylib
  * /bin/bash
  * /usr/sbin/sshd
- * /etc/apt
  * 这个表可以尽可能的列出来，然后判定是否存在，只要有存在的就可以认为机器是越狱了。
  */
 const char* jailbreak_tool_pathes[] = {
@@ -53,7 +52,6 @@ const char* jailbreak_tool_pathes[] = {
     "/bin/bash",
     "/usr/sbin/sshd",
     "/etc/apt",
-    //"/private/var/lib/apt/"
 };
 
 + (BOOL)detectJailBreakByJailBreakFileExisted {
@@ -96,7 +94,7 @@ const char* jailbreak_tool_pathes[] = {
 
 /**
  * 判断cydia的URL scheme.
- * URL scheme是可以用来在应用中呼出另一个应用，是一个资源的路径（详见《iOS中如何呼出另一个应用》），这个方法也就是在判定是否存在cydia这个应用。
+ * URL scheme是可以用来在应用中呼出另一个应用，这个方法也就是在判定是否存在cydia这个应用。
  */
 + (BOOL)detectJailBreakByCydiaPathExisted {
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {

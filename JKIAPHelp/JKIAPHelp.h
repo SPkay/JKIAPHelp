@@ -4,13 +4,7 @@
 //
 //  Created by kane on 2018/8/7.
 //  Copyright © 2018年 kane. All rights reserved.
-//
-
-#import <UIKit/UIKit.h>
-
-
-//! Project version string for JKIAPHelp.
-FOUNDATION_EXPORT const unsigned char JKIAPHelpVersionString[];
+// JKIAPHelpVersion 1.0.0
 
 #import "JKIAPManager.h"
 #import "JKIAPTransactionModel.h"

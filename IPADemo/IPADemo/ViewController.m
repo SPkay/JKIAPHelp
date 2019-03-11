@@ -80,11 +80,10 @@
 
 - (void)verifyWithModel:(JKIAPTransactionModel *)model resultAction:(VerifyRsultBlock)resultAction{
     
-//     resultAction(JKIAPVerifyFailed);
-//    return;
+
     NSString *appOrderId = model.seriverOrder;
     NSDictionary *dic = @{@"receipt-data":model.appStoreReceipt};
-  
+  __weak  __typeof(self)  weakSelf = self;
     [self networkingPOSTWithURLString:SandBoxURL parameters:dic jasonParmeter:YES success:^(id  _Nullable responseObject) {
         
         NSInteger appleCode = [responseObject[@"status"] integerValue];
@@ -93,7 +92,7 @@
        
             NSString *log =[NSString stringWithFormat:@"本地验证苹果凭证成功:%@",responseObject];
             NSLog(@"%@",log);
-            [self JKIAPLog:log];
+            [weakSelf JKIAPLog:log];
             
             resultAction(JKIAPVerifyValid);
             //NSArray *array = responseObject[@"receipt"][@"in_app"];
@@ -103,20 +102,20 @@
        
             NSString *log =[NSString stringWithFormat:@"苹果服务器不可用!%@",appOrderId];
             NSLog(@"%@",log);
-            [self JKIAPLog:log];
+            [weakSelf JKIAPLog:log];
             resultAction(JKIAPVerifyFailed);
             
             //[weakSelf checkUnchekReceipt];
         }else if (appleCode == 21007) {//沙箱订单
             NSString *log =[NSString stringWithFormat:@"本地验证苹果凭证失败:%@",responseObject];
             NSLog(@"%@",log);
-            [self JKIAPLog:log];
+            [weakSelf JKIAPLog:log];
           
           
         }else{
             NSString *log =[NSString stringWithFormat:@"本地验证苹果凭证失败:%ld",(long)appleCode];
             NSLog(@"%@",log);
-            [self JKIAPLog:log];
+            [weakSelf JKIAPLog:log];
              resultAction(JKIAPVerifyInvalid);
         }
         
@@ -125,13 +124,14 @@
         resultAction(JKIAPVerifyFailed);
         NSString *log =[NSString stringWithFormat:@"本地验证苹果凭证失败!:%@",error];
         NSLog(@"%@",log);
-        [self JKIAPLog:log];
+        [weakSelf JKIAPLog:log];
      
     }];
 }
 
 - (IBAction)deletedAll:(id)sender {
-   // [[JKIAPVerifyManager new] cleanAllModels];
+    //仅用于测试
+    [[JKIAPVerifyManager new] cleanAllModels];
 }
 
 

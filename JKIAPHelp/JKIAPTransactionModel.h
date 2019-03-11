@@ -12,9 +12,6 @@ typedef enum : NSUInteger {
     AppleProductType_Unknow=0,
     AppleProductType_Consumable,//消费类产品(单笔,游戏币)
     AppleProductType_NonConsumable,//非消费类产品
-    //Auto_Renewable_Subscriptions,//包月＋自动续费
-   // Free_Subscription,//免费
-    //Non_Renewing_Subscription,//包月+非自动续费
 } AppleProductType;
 
 typedef NS_ENUM(NSUInteger, TransactionStatus) {
