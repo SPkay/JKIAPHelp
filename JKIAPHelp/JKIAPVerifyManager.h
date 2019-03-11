@@ -25,12 +25,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *userId;
 
+
+@property (nonatomic, assign) BOOL isVerifing;
 /**
  * 初始化方法.
  */
-- (instancetype)initWithUserId:(NSString *)userId ;
+- (instancetype)initWithUserId:(NSString *)userId;
 
 
+/**
+ 初始化方法,指定钥匙串存储参数.
+
+ @param userId 用户ID
+ @param keychainService 钥匙串Service
+ @param keychainAccount 钥匙串Account
+ @return JKIAPVerifyManager
+ */
+- (instancetype)initWithUserId:(NSString *)userId
+               keychainService:(NSString *)keychainService
+               keychainAccount:(NSString *)keychainAccount;
 /**
  获取所有交易模型
  

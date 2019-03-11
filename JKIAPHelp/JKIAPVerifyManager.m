@@ -13,15 +13,13 @@
 #import <StoreKit/StoreKit.h>
 
 
-#define KEYCHAIN_SERVICE @"com.jkiap_keychain_service.www"
-#define KEYCHAIN_ACCOUNT @"com.jkiap_keychain_account.www"
 
 @interface JKIAPVerifyManager ()
 {
-    
-    BOOL _isVerifing;
     JKIAPTransactionModel *_currentModel;
     NSMutableArray *_modelArray;
+    NSString *_keychain_service;
+    NSString *_keychain_account;
 }
 
 @end
@@ -33,12 +31,24 @@
 - (instancetype)initWithUserId:(NSString *)userId{
     self = [super init];
     if (self) {
+        if (!_keychain_account) {
+            _keychain_account= @"com.jkiap_keychain_account.www";
+        }
+        if (!_keychain_service) {
+            _keychain_service =@"com.jkiap_keychain_service.www";
+        }
         _userId = userId;
         _isVerifing = NO;
         _modelArray = [NSMutableArray new];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeStatus) name:JKIAPVerifyNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeStatus:) name:JKIAPVerifyNotification object:nil];
     }
     return self;
+}
+
+- (instancetype)initWithUserId:(NSString *)userId keychainService:(NSString *)keychainService keychainAccount:(NSString *)keychainAccount{
+    _keychain_service = keychainService;
+    _keychain_account = keychainAccount;
+  return   [self initWithUserId:userId];
 }
 
 - (void)dealloc{
@@ -67,38 +77,47 @@
  * ⚠️ 开始支付凭证验证队列(开始验证之前, 必须保证收据不为空).
  */
 - (void)startPaymentTransactionVerifingModel:(JKIAPTransactionModel *)transactionModel{
+    //防止重复验证
     for (JKIAPTransactionModel *model in _modelArray) {
         if ([model.transactionIdentifier isEqualToString:transactionModel.transactionIdentifier]) {
             return;
         }
     }
+ __block   BOOL hasModel = NO;
    __block JKIAPTransactionModel *resultModel= transactionModel;
      NSMutableSet *keychainSet = [self fetchAllPaymentTransactionModel];
     [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
         
-        if (transactionModel.seriverOrder) {
+        if (transactionModel.seriverOrder ) {
             if ([model.seriverOrder isEqualToString:transactionModel.seriverOrder]) {
                 model.transactionIdentifier = transactionModel.transactionIdentifier;
                 model.transactionStatus = TransactionStatusAppleSucc;
                 resultModel = model;
+                hasModel = YES;
                 *stop = YES;
             }
-        }else{
-            if ([transactionModel.productIdentifier isEqualToString:model.productIdentifier] && [transactionModel.userId isEqualToString:model.userId]) {
+        }else if ([transactionModel.productIdentifier isEqualToString:model.productIdentifier]) {
                 model.transactionIdentifier = transactionModel.transactionIdentifier;
+            [transactionModel setValue:model.seriverOrder forKey:@"seriverOrder"];
+              [transactionModel setValue:model.userId forKey:@"userId"];
+              
                 model.transactionStatus = TransactionStatusAppleSucc;
                   resultModel = model;
+                       hasModel = YES;
                 *stop = YES;
             }
-        }
+        
       
     }];
-    //保存更改
-    [self savePaymentTransactionModels:keychainSet];
+    if (hasModel) {
+        //保存更改
+        [self savePaymentTransactionModels:keychainSet];
+        
+        [_modelArray addObject:transactionModel];
+        //开始验证
+        [self verifingModel:resultModel];
+    }
    
-    [_modelArray addObject:transactionModel];
-    //开始验证
-    [self verifingModel:resultModel];
   
 }
 -(void)updatePaymentTransactionModelStatus:(JKIAPTransactionModel *)transactionModel{
@@ -165,8 +184,7 @@
  */
 - (NSMutableSet <JKIAPTransactionModel *>*)fetchAllPaymentTransactionModel{
     
-    @synchronized (self) {
-        NSData *keychainData = [SAMKeychain passwordDataForService:KEYCHAIN_SERVICE account:KEYCHAIN_ACCOUNT];
+        NSData *keychainData = [SAMKeychain passwordDataForService:_keychain_service account:_keychain_account];
         NSMutableSet *keychainSet= [NSMutableSet new];
         if (keychainData) {
             NSSet *  keychainSetData= (NSSet *)[NSKeyedUnarchiver unarchiveObjectWithData:keychainData];
@@ -177,16 +195,13 @@
         }
         JKIAPLog(@"当前获取的存档;%@",keychainSet);
         return keychainSet;
-    }
+    
    
     
 }
 
 - (void)savePaymentTransactionModels:(NSSet <JKIAPTransactionModel *>*)models{
     
-    @synchronized (self) {
-        
-   
     NSMutableSet *saveSet =[NSMutableSet new];
     for (JKIAPTransactionModel *model in models) {
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:model];
@@ -194,24 +209,30 @@
     }
     
         NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:saveSet];
-        
-     BOOL result=   [SAMKeychain setPasswordData:saveData forService:KEYCHAIN_SERVICE account:KEYCHAIN_ACCOUNT];
-        JKIAPLog(@"保存存档%@->%@",models,(result ? @"成功":@"失败"));
-     }
-
+    NSError *error = nil;
+    BOOL result=  NO;
+    
+    while (!result) {
+      result=  [SAMKeychain setPasswordData:saveData forService:_keychain_service account:_keychain_account error:&error];
+          JKIAPLog(@"保存存档%@->%@,error:%@",models,(result ? @"success":@"failure"),error);
+    }
 }
 
 - (void)cleanAllModels{
-    [SAMKeychain deletePasswordForService:KEYCHAIN_SERVICE account:KEYCHAIN_ACCOUNT];
+    [SAMKeychain deletePasswordForService:_keychain_service account:_keychain_account];
 }
 
-- (void)changeStatus{
+- (void)changeStatus:(NSNotification*)notification{
+    
+    [_modelArray removeObject: notification.object];
     if (_modelArray.count>0) {
         [self verifingModel:_modelArray.firstObject];
     }else{
         _isVerifing = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:JKIAPVerifyFinishNotification object:nil];
     }
     
 }
+
 
 @end

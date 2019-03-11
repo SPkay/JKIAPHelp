@@ -9,12 +9,11 @@
 #import <Foundation/Foundation.h>
 
 
-
 FOUNDATION_EXTERN NSString *const JKIAPErrorDomain;
 #define JKIAPVerifyNotification @"JKIAPVerifyNotification"
-
-
+#define JKIAPVerifyFinishNotification @"JKIAPVerifyFinishNotification"
 #define JKIAPLog(...) [JKIAPConfig sendLog:__VA_ARGS__]
+
 @interface JKIAPConfig : NSObject
 
 /* 是否输出log */

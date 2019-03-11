@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
 /**
  * 后台配置的订单号.
  */
-@property(nonatomic, copy, readonly) NSString *seriverOrder;
+@property(nonatomic, copy,readonly) NSString *seriverOrder;
 
 /**
  * 价格字符.

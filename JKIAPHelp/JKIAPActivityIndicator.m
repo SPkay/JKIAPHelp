@@ -12,7 +12,7 @@
 @interface   JKIAPActivityIndicator()
 {
     UIActivityIndicatorView *_actIndicatorView;
-    UIView *_activitybackView;
+    UIVisualEffectView *_activitybackView;
     UIView *_backView;
     UILabel *_label;
 }
@@ -53,7 +53,7 @@
 - (void)stop{
     dispatch_async(dispatch_get_main_queue(), ^{
 
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             self->_backView.alpha = 0;
         } completion:^(BOOL finished) {
             [self->_backView removeFromSuperview];
@@ -72,11 +72,15 @@
         _backView = [UIView new];
         
         _backView.userInteractionEnabled = YES;
-        _backView.backgroundColor = [UIColor colorWithWhite:1 alpha:.5];
+        _backView.backgroundColor = [UIColor clearColor];
         _actIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        
+        
+        UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        UIVisualEffectView * visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blur];
+        visualEffectView.alpha = 1;
         _actIndicatorView.color = [UIColor blackColor];
-        _activitybackView = [UIView new];
-        _activitybackView.backgroundColor = [UIColor lightGrayColor];
+        _activitybackView = visualEffectView;
         _activitybackView.layer.cornerRadius = 5;
         _label = [UILabel new];
         _label.textAlignment = NSTextAlignmentCenter;
@@ -118,7 +122,7 @@
         [_backView addConstraints:@[constrant21,constrant22,constrant23,constrant24]];
         
         
-          [_activitybackView addSubview:_label];
+          [_activitybackView.contentView addSubview:_label];
         NSLayoutConstraint *constrant31 = [NSLayoutConstraint constraintWithItem:_label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:25];
         
         NSLayoutConstraint *constrant32 = [NSLayoutConstraint constraintWithItem:_label attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_activitybackView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:5];
@@ -127,7 +131,7 @@
         [_activitybackView addConstraints:@[constrant31,constrant32,constrant33,constrant34]];
         
         
-        [_activitybackView addSubview:_actIndicatorView];
+        [_activitybackView.contentView addSubview:_actIndicatorView];
         NSLayoutConstraint *constrant41 = [NSLayoutConstraint constraintWithItem:_actIndicatorView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_activitybackView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
         
       NSLayoutConstraint *constrant42 = [NSLayoutConstraint constraintWithItem:_actIndicatorView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:_activitybackView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-10];

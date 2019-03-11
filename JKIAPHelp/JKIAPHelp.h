@@ -11,9 +11,8 @@
 
 //! Project version string for JKIAPHelp.
 FOUNDATION_EXPORT const unsigned char JKIAPHelpVersionString[];
-const unsigned char JKIAPHelpVersionString[] = "0.1";
 
 #import "JKIAPManager.h"
 #import "JKIAPTransactionModel.h"
 #import "JKIAPPayDelegate.h"
-
+#import "JKIAPVerifyManager.h"

@@ -203,7 +203,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
         /*
          ... but WWAN connections are OK if the calling application is using the CFNetwork APIs.
          */
-        returnValue = JKReachableViaWWAN;
+     
         if (IOS_VERSION >= 7.0) {
             CTTelephonyNetworkInfo *phonyNetwork = [[CTTelephonyNetworkInfo alloc] init];
             NSString *currentStr = phonyNetwork.currentRadioAccessTechnology;
@@ -257,6 +257,18 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
     
     return returnValue;
 }
-
+- (BOOL)currentReachable
+{
+    NSAssert(_reachabilityRef != NULL, @"currentNetworkStatus called with NULL SCNetworkReachabilityRef");
+   
+    SCNetworkReachabilityFlags flags;
+    
+    if (SCNetworkReachabilityGetFlags(_reachabilityRef, &flags))
+    {
+           return (flags & kSCNetworkReachabilityFlagsReachable);
+    }
+    
+    return NO;
+}
 
 @end

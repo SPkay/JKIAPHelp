@@ -55,6 +55,9 @@ extern NSString *kJKReachabilityChangedNotification;
 - (BOOL)startNotifier;
 - (void)stopNotifier;
 
+
+- (BOOL)currentReachable;
+
 - (NetworkStatus)currentReachabilityStatus;
 
 /*!

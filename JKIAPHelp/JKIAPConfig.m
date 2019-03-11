@@ -9,10 +9,7 @@
 #import "JKIAPConfig.h"
 #import "JKIAPManager.h"
 
-NSString *const JKIAPErrorDomain = @"com.jkiap_error_domain.www";
-
-
-
+NSString *const JKIAPErrorDomain = @"JKIAPErrorDomain";
 static BOOL sendLog;
 
 @implementation JKIAPConfig

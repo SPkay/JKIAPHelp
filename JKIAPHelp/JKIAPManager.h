@@ -12,13 +12,27 @@
 #import "JKIAPTransactionModel.h"
 #import <StoreKit/StoreKit.h>
 
+
+typedef enum : NSUInteger {
+    JKIAPError_Paying = 101,
+    JKIAPError_Jailbroken = 102,
+    JKIAPError_Parameter = 103,
+    JKIAPError_Permission= 104,
+    JKIAPError_ProductId= 105,
+    JKIAPError_Receipt = 106,
+    JKIAPError_VerifyInvalid = 107,
+    JKIAPError_Net = 108,
+} JKIAPErrorCode;
+
+
+
 NS_ASSUME_NONNULL_BEGIN
 @class SKProduct;
 @interface JKIAPManager : NSObject
 
 
 /** 请求中 */
-@property (nonatomic, assign,readonly) BOOL isPaying;
+@property (nonatomic, assign,readonly) BOOL loading;
 /* 购买代理 */
 @property (nonatomic,weak)id<JKIAPPayDelegate> delegate;
 
@@ -66,15 +80,40 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setIsEnLog:(BOOL)isEnable;
 
+
+
 /**
- * 注册支付事务监听, 并且开始支付凭证验证队列.
- *
- * @warning ⚠️ 请在用户登录时和用户重新启动 APP 时调用.
- *
- * @param userid 用户 ID.
+ 注册支付事务监听, 并且开始支付凭证验证队列.
+@warning ⚠️ 请在用户登录时和用户重新启动 APP 时调用.
+ @param userid 用户 ID.
  */
 - (void)registerPayWithUserID:(NSString *)userid;
 
+
+
+/**
+ 注册支付事务监听, 并且开始支付凭证验证队列.(指定钥匙串账号和服务区)
+
+ @param userid 用户 ID.
+ @param keychainService keychainService
+ @param keychainAccount keychainAccount
+ */
+- (void)registerPayWithUserID:(NSString *)userid
+              keychainService:(NSString *)keychainService
+              keychainAccount:(NSString *)keychainAccount;
+
+
+
+/**
+ 购买物品
+
+ @param productIdentifier 物品id
+ @param appproductType 类型
+ @param orderId 订单号
+ */
+- (void)buyProductWithProductIdentifier:(NSString *)productIdentifier
+                         appproductType:( AppleProductType)appproductType
+                                orderId:(NSString *)orderId;
 /**
  注销支付管理
  */
@@ -94,28 +133,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)restoreProducts;
 
-
-
-
-
-/**
-  购买物品
-
- @param productIdentifier 产品标识
- @param appproductType 物品类型
- @param orderId 订单号
- */
-- (void)buyProductWithProductIdentifier:(NSString *)productIdentifier
-                         appproductType:( AppleProductType)appproductType
-                                orderId:(NSString *)orderId ;
-
-/**
- 购买物品(苹果购买完成后再生成订单,建设中)
-
- @param productIdentifier 物品标识
- @param appproductType 物品类型
- */
-//- (void)buyProductWithProductIdentifier:(NSString *)productIdentifier appproductType:( AppleProductType)appproductType;
 
 
 

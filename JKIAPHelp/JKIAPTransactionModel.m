@@ -8,29 +8,12 @@
 
 #import "JKIAPTransactionModel.h"
 #import "JKIAPConfig.h"
-NSUInteger const kJKIAPPaymentTransactionModelVerifyWarningCount = 20; // 最多验证次数，如果超过这个值就报警。
-
 
 @interface JKIAPTransactionModel ()
-
-/**
- * 用户 id.
- */
-@property(nonatomic, copy, readwrite) NSString *userId;
-/**
- * 商品 id.
- */
-@property(nonatomic, copy, readwrite) NSString *productIdentifier;
-
-/**
- * 订单 id.
- */
-@property(nonatomic, copy, readwrite) NSString *seriverOrder;
-
-@property(nonatomic, strong, readwrite) NSDate *transactionDate;
 @end
 
 @implementation JKIAPTransactionModel
+
 - (NSString *)description {
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
@@ -80,7 +63,7 @@ NSUInteger const kJKIAPPaymentTransactionModelVerifyWarningCount = 20; // 最多
                                     userId:(NSString *)userId{
     
     NSParameterAssert(productIdentifier);
-    NSParameterAssert(orderId);
+    //NSParameterAssert(orderId);
 
     JKIAPTransactionModel*model = [JKIAPTransactionModel new];
     model.productIdentifier = productIdentifier;
@@ -93,14 +76,7 @@ NSUInteger const kJKIAPPaymentTransactionModelVerifyWarningCount = 20; // 最多
     return model;
 }
 
-//- (void)setModelVerifyCount:(NSUInteger)modelVerifyCount {
-//    _modelVerifyCount = modelVerifyCount;
-//    
-//    if (modelVerifyCount > kJKIAPPaymentTransactionModelVerifyWarningCount) {
-//        NSString *errorString = [NSString stringWithFormat:@"验证次数超过最大验证次数: %@", self];
-//        NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey : errorString}];
-//    }
-//}
+
 
 #pragma mark - Private
 
@@ -136,5 +112,29 @@ NSUInteger const kJKIAPPaymentTransactionModelVerifyWarningCount = 20; // 最多
  
     
     return isTransactionIdentifierMatch && isProductIdentifierMatch&&isSeriverOrderMatch ;
+}
+
+
+#pragma mark -  Setter
+- (void)setUserId:(NSString *)userId{
+    if (userId) {
+            _userId = userId;
+    }
+
+}
+- (void)setProductIdentifier:(NSString *)productIdentifier{
+    if (productIdentifier) {
+            _productIdentifier = productIdentifier;
+    }
+}
+- (void)setTransactionDate:(NSDate *)transactionDate{
+    if (transactionDate) {
+        _transactionDate = transactionDate;
+    }
+}
+- (void)setSeriverOrder:(NSString *)seriverOrder{
+    if (seriverOrder) {
+        _seriverOrder = seriverOrder;
+    }
 }
 @end
