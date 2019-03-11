@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "JKIAPHelp"
-  s.version      = "0.1"
+  s.version      = "1.0.0"
   s.summary      = "AppleIap,iap,IAP"
 
   # This description is used to generate tags and improve search results.
@@ -65,7 +65,7 @@ apple in app price help
   #
 
   # s.platform     = :ios
-  s.platform     = :ios, "7.0"
+  s.platform     = :ios, "8.0"
 
   #  When using multiple platforms
   # s.ios.deployment_target = "5.0"
