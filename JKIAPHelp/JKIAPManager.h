@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UiKit.h>
-#import "SAMKeychain.h"
 #import "JKIAPPayDelegate.h"
 #import "JKIAPTransactionModel.h"
 #import <StoreKit/StoreKit.h>
