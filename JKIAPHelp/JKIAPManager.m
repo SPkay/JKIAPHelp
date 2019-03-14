@@ -15,7 +15,7 @@
 
 
 
-
+typedef void(^ReceiptBlock)(NSString *receipt);
 @interface JKIAPManager()<SKPaymentTransactionObserver,SKProductsRequestDelegate,JKIAPVerifyManagerDelegate>
 {
     NSString *_appOrderID;
@@ -27,6 +27,7 @@
     SKReceiptRefreshRequest *_refreshRequest;
     SKMutablePayment *_currentPayment;//已获取到订单信息,还未开始购买
     JKReachability *_reachability;
+    ReceiptBlock _receiptBlock;
 }
 
 /**
@@ -342,7 +343,17 @@ static  JKIAPManager *manager = nil;
             }
         }else if (model.transactionStatus == TransactionStatusSeriverError || model.transactionStatus == TransactionStatusAppleSucc){
             //验证订单
-            [self.verifyManager startPaymentTransactionVerifingModel :model];
+      
+            if (!model.appStoreReceipt) {
+                __weak  __typeof(self)  weakSelf = self;
+                [self fetchTransactionReceiptData:^(NSString *receipt) {
+                    model.appStoreReceipt = receipt;
+                    [weakSelf.verifyManager startPaymentTransactionVerifingModel:model];
+                }];
+            }else{
+                    [self.verifyManager startPaymentTransactionVerifingModel :model];
+            }
+            
         }else if (model.transactionStatus == TransactionStatusSeriverFailed){
             if (self.delegate &&[self.delegate respondsToSelector:@selector(onRedistributeGoodsFailue:withError:)]) {
                 [self.delegate onRedistributeGoodsFailue:model withError:model.error];
@@ -475,22 +486,30 @@ static  JKIAPManager *manager = nil;
         transactionIdentifier = [NSUUID UUID].UUIDString;
     }
     JKIAPLog(@"IAP_购买完成,向自己的服务器验证 ---- %@,paying:%d", orderId,self.loading);
-
+  __weak  __typeof(self)  weakSelf = self;
        if (_currentModel && [orderId isEqualToString:_currentModel.seriverOrder]) {
            
            if (_currentModel.transactionStatus == TransactionStatusSeriverSucc || _currentModel.transactionStatus == TransactionStatusSeriverFailed) {
                [self finishTransationWithModel:_currentModel];
                return;
            }
+         
+           [self fetchTransactionReceiptData:^(NSString *receipt) {
+            __strong  __typeof(self)  strongSelf = weakSelf;
+               strongSelf->_currentModel.appStoreReceipt = receipt;
+               strongSelf->_currentModel.transactionIdentifier =transactionIdentifier;
+               [weakSelf.verifyManager startPaymentTransactionVerifingModel:strongSelf->_currentModel];
+           }];
            
-            _currentModel.appStoreReceipt = [self fetchTransactionReceiptData];
-            _currentModel.transactionIdentifier =transactionIdentifier;
-            [self.verifyManager startPaymentTransactionVerifingModel:_currentModel];
         }else{
          JKIAPTransactionModel *model = [JKIAPTransactionModel modelWithProductIdentifier:tran.payment.productIdentifier appproductType:AppleProductType_Unknow price:payAmount orderId:orderId userId:_userId];
-         model.appStoreReceipt = [self fetchTransactionReceiptData];
-         model.transactionIdentifier = transactionIdentifier;
-          [self.verifyManager startPaymentTransactionVerifingModel:model];
+            [self fetchTransactionReceiptData:^(NSString *receipt) {
+                    __strong  __typeof(self)  strongSelf = weakSelf;
+                model.appStoreReceipt = receipt;
+                model.transactionIdentifier = transactionIdentifier;
+                [strongSelf.verifyManager startPaymentTransactionVerifingModel:model];
+            }];
+        
     }
 }
 
@@ -625,27 +644,7 @@ static  JKIAPManager *manager = nil;
 
 - (void)startPaymentTransactionVerifingModel:(JKIAPTransactionModel *)transactionModel{
     
-    if (!transactionModel.appStoreReceipt) {
-        transactionModel.appStoreReceipt=[self fetchTransactionReceiptData];
-    }
     
-    if (!transactionModel.appStoreReceipt) {
-        
-        NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Receipt userInfo:@{NSLocalizedDescriptionKey:@"无本地票据"}];
-        if (self.loading && [self.delegate respondsToSelector:@selector(onDistributeGoodsFailue:withError:)]) {
-            [self.delegate onDistributeGoodsFailue:transactionModel withError:error];
-        }else  if (!self.loading && [self.delegate respondsToSelector:@selector(onRedistributeGoodsFailue:withError:)]) {
-            [self.delegate onRedistributeGoodsFailue:transactionModel withError:error];
-        }
-        transactionModel.transactionStatus = TransactionStatusSeriverFailed;
-        [self.verifyManager updatePaymentTransactionModelStatus:transactionModel];
-        if (self.loading && _currentModel) {
-            self.loading = NO;
-            _currentModel = nil;
-        }
-            [[NSNotificationCenter defaultCenter] postNotificationName:JKIAPVerifyNotification object:transactionModel];
-        return;
-    }
     // 发送到苹果服务器验证凭证
     __weak typeof(self) weakSelf = self;
     if (self.delegate && [self.delegate respondsToSelector:@selector(verifyWithModel:resultAction:)]) {
@@ -734,37 +733,51 @@ static  JKIAPManager *manager = nil;
 }
 
 
-
+#pragma mark -  FetchTransactionReceipt
 
 /**
  获取当前票据
  
- @return 票据
  */
-- (NSString *)fetchTransactionReceiptData{
+- (void)fetchTransactionReceiptData:(ReceiptBlock)result{
+    
     NSURL *appStoreReceiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
     NSData *receiptData = [NSData dataWithContentsOfURL:appStoreReceiptURL];
-     NSString *receiptString=[receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
-    if(!receiptData){
-        
+    NSString *receiptString=[receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+    if(!receiptString){
         _refreshRequest= [[SKReceiptRefreshRequest alloc] initWithReceiptProperties:nil];
         _refreshRequest.delegate = self;
-        [_refreshRequest start];
-        
+        _receiptBlock = result;
+        [self->_refreshRequest start];
+    }else{
+        result(receiptString);
+        if (_receiptBlock) {
+            _receiptBlock = nil;
+        }
     }
-    return receiptString;
+    
+    
 }
 
 
 #pragma mark -  SKRequestDelegate
 - (void)requestDidFinish:(SKRequest *)request {
-    if ([request isKindOfClass:[SKReceiptRefreshRequest class]]) {
-                JKIAPLog(@"IAP_SKReceiptRefreshRequest_Success");
-    }
+    
+        if ([request isKindOfClass:[SKReceiptRefreshRequest class]]) {
+            JKIAPLog(@"IAP_SKReceiptRefreshRequest_Success");
+            if (_receiptBlock) {
+                [self fetchTransactionReceiptData:_receiptBlock];
+            }
+        }
+  
+    
 }
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error{
     if ([request isKindOfClass:[SKReceiptRefreshRequest class]]) {
         JKIAPLog(@"IAP_SKReceiptRefreshRequest_Error:%@",error.localizedDescription);
+        if (_receiptBlock) {
+            [self fetchTransactionReceiptData:_receiptBlock];
+        }
     }
 }
 

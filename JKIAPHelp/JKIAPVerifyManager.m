@@ -92,6 +92,9 @@
             if ([model.seriverOrder isEqualToString:transactionModel.seriverOrder]) {
                 model.transactionIdentifier = transactionModel.transactionIdentifier;
                 model.transactionStatus = TransactionStatusAppleSucc;
+                if (transactionModel.appStoreReceipt) {
+                    model.appStoreReceipt = transactionModel.appStoreReceipt;
+                }
                 resultModel = model;
                 hasModel = YES;
                 *stop = YES;
@@ -100,7 +103,9 @@
                 model.transactionIdentifier = transactionModel.transactionIdentifier;
             [transactionModel setValue:model.seriverOrder forKey:@"seriverOrder"];
               [transactionModel setValue:model.userId forKey:@"userId"];
-              
+            if (transactionModel.appStoreReceipt) {
+                model.appStoreReceipt = transactionModel.appStoreReceipt;
+            }
                 model.transactionStatus = TransactionStatusAppleSucc;
                   resultModel = model;
                        hasModel = YES;

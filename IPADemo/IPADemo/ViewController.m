@@ -52,7 +52,7 @@
     
     NSString *orderId = [NSString stringWithFormat:@"%ud",arc4random()%99999999];
     
-    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"VOEZ_BuyMusic" appproductType:AppleProductType_Consumable orderId:orderId];
+    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"voezremake_jswzb" appproductType:AppleProductType_Consumable orderId:orderId];
 }
 - (IBAction)buyAction2:(id)sender {
     NSString *orderId = [NSString stringWithFormat:@"%d",arc4random()];
@@ -65,7 +65,7 @@
 }
 
 - (void)onIAPPayFailue:(JKIAPTransactionModel *)model withError:(NSError *)error{
-    NSString *log =[NSString stringWithFormat:@"demo--购买失败,订单号%@",model.seriverOrder];
+    NSString *log =[NSString stringWithFormat:@"demo--购买失败%@,订单号%@",error.localizedDescription,model.seriverOrder];
     NSLog(@"%@",log);
     [self JKIAPLog:log];
 }
