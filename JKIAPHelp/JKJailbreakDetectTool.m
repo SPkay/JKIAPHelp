@@ -55,6 +55,7 @@ const char* jailbreak_tool_pathes[] = {
 };
 
 + (BOOL)detectJailBreakByJailBreakFileExisted {
+    
     for (int i = 0; i<ARRAY_SIZE(jailbreak_tool_pathes); i++) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithUTF8String:jailbreak_tool_pathes[i]]]) {
            

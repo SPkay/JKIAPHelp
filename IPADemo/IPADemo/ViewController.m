@@ -52,12 +52,12 @@
     
     NSString *orderId = [NSString stringWithFormat:@"%ud",arc4random()%99999999];
     
-    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"voezremake_jswzb" appproductType:AppleProductType_Consumable orderId:orderId];
+    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"cpm.oilBox.ref" appproductType:AppleProductType_Consumable orderId:orderId];
 }
 - (IBAction)buyAction2:(id)sender {
     NSString *orderId = [NSString stringWithFormat:@"%d",arc4random()];
     
-    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"VOEZ_BuyMusic2" appproductType:AppleProductType_NonConsumable orderId:orderId];
+    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"com.oil.ref" appproductType:AppleProductType_NonConsumable orderId:orderId];
 }
 - (IBAction)restore:(id)sender {
     [[JKIAPManager sharedManager] restoreProducts];

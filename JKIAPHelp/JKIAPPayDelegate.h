@@ -20,6 +20,15 @@ typedef enum : NSUInteger {
     
 } JKIAPVerifyResult;
 
+typedef enum : NSUInteger {
+    JKIAPLoadingStatus_None = 0,
+    JKIAPLoadingStatus_CheckingProduct = 1,
+    JKIAPLoadingStatus_Paying,
+    JKIAPLoadingStatus_Restoring,
+    JKIAPLoadingStatus_Verifying,
+} JKIAPLoadingStatus;
+
+
 typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
 
 @protocol JKIAPPayDelegate <NSObject>
@@ -34,6 +43,11 @@ typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
 - (void)verifyWithModel:(JKIAPTransactionModel *)model resultAction:(VerifyRsultBlock)resultAction;
 
 @optional
+
+/// 当前的状态
+/// @param status 状态
+- (void)currentStatus:(JKIAPLoadingStatus)status;
+
 /**
  获取苹果商店信息成功
 

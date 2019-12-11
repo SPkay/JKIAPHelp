@@ -10,7 +10,7 @@
 #import "JKIAPPayDelegate.h"
 #import "JKIAPTransactionModel.h"
 #import <StoreKit/StoreKit.h>
-
+#import "JKIAPActivityIndicatorProtocol.h"
 
 typedef enum : NSUInteger {
     JKIAPError_Paying = 101,
@@ -24,17 +24,16 @@ typedef enum : NSUInteger {
 } JKIAPErrorCode;
 
 
-
 NS_ASSUME_NONNULL_BEGIN
 @class SKProduct;
 @interface JKIAPManager : NSObject
 
 
-/** 请求中 */
-@property (nonatomic, assign,readonly) BOOL loading;
+
 /* 购买代理 */
 @property (nonatomic,weak)id<JKIAPPayDelegate> delegate;
-
+/* 活动指示器,如果没有就使用默认的 */
+@property (nonatomic,strong)id<JKIAPActivityIndicatorProtocol> activityIndicatorController;
 /**
  * 单例方法.
  */
@@ -77,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param isEnable 是否发送Log
  */
-- (void)setIsEnLog:(BOOL)isEnable;
+- (void)enableLog:(BOOL)isEnable;
 
 
 

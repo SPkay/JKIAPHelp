@@ -10,12 +10,11 @@
 
 
 @interface   JKIAPActivityIndicator()
-{
-    UIActivityIndicatorView *_actIndicatorView;
-    UIVisualEffectView *_activitybackView;
-    UIView *_backView;
-    UILabel *_label;
-}
+
+@property (nonatomic, strong) UIActivityIndicatorView *actIndicatorView;
+  @property (nonatomic, strong)  UIVisualEffectView *activitybackView;
+   @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIView *backView;
 @end
 
 @implementation JKIAPActivityIndicator
@@ -27,24 +26,28 @@
         [self creatViews];
     }
     return self;
+    
 }
 /**
  * 活动指示器弹出框开始
  */
-- (void)start{
+- (void)showActivityWithMessage:(NSString *)msg{
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self->_actIndicatorView.isAnimating == YES) {
-            [self stop];
-        }
-        self->_backView.alpha = 0;
-        [self layoutViews];
-        [self->_actIndicatorView startAnimating];
-        [UIView animateWithDuration:0.5 animations:^{
-            self->_backView.alpha = 1;
-        }];
-       
-    });
-
+           if (self.actIndicatorView.isAnimating == YES) {
+               return ;
+           }
+        if (msg) {
+                self.label.text = msg;
+           }
+           self.backView.alpha = 0;
+           [self layoutViews];
+           [self.actIndicatorView startAnimating];
+           [UIView animateWithDuration:0.5 animations:^{
+               self.backView.alpha = 1;
+           }];
+          
+       });
+   
 }
 
 /**
@@ -54,17 +57,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
 
         [UIView animateWithDuration:0.5 animations:^{
-            self->_backView.alpha = 0;
+            self.backView.alpha = 0;
         } completion:^(BOOL finished) {
-            [self->_backView removeFromSuperview];
-            [self->_actIndicatorView stopAnimating];
+            [self.backView removeFromSuperview];
+            [self.actIndicatorView stopAnimating];
         }];
     
     });
   
-}
-- (void)setLableMessage:(NSString *)msg{
-    _label.text = msg;
 }
 
 - (void)creatViews{
@@ -144,3 +144,4 @@
 
 
 @end
+    

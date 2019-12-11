@@ -8,6 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		3C044A90211C72A900F4AC24 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C044A8F211C72A900F4AC24 /* StoreKit.framework */; };
+		3C18D6B8239F9A14004566B2 /* JKIAPActivityIndicatorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C18D6B7239F9A14004566B2 /* JKIAPActivityIndicatorProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6BC23A0C51D004566B2 /* JKIAPHelp.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CB70FF3218736670009FF44 /* JKIAPHelp.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6BF23A0C52C004566B2 /* JKIAPPayDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CB70FF0218736670009FF44 /* JKIAPPayDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6C023A0C532004566B2 /* JKJailbreakDetectTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FF1218736670009FF44 /* JKJailbreakDetectTool.m */; };
+		3C18D6C123A0C540004566B2 /* JKIAPTransactionModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CB70FF6218736670009FF44 /* JKIAPTransactionModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6C223A0C55D004566B2 /* JKIAPConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FF8218736670009FF44 /* JKIAPConfig.m */; };
+		3C18D6C323A0C564004566B2 /* JKJailbreakDetectTool.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CB70FFA218736670009FF44 /* JKJailbreakDetectTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6C423A0C567004566B2 /* JKIAPTransactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FFB218736670009FF44 /* JKIAPTransactionModel.m */; };
+		3C18D6C923A0CB30004566B2 /* JKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C18D6C723A0CB30004566B2 /* JKReachability.m */; };
+		3C18D6CA23A0CB30004566B2 /* JKReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C18D6C823A0CB30004566B2 /* JKReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6CC23A0E754004566B2 /* SAMKeychainQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C697EC621199E2A00DACD60 /* SAMKeychainQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C18D6CD23A0E75B004566B2 /* SAMKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C697EC421199E2A00DACD60 /* SAMKeychain.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C24EE5522F9689900A81B08 /* JKIAPHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C24EE4E22F9689900A81B08 /* JKIAPHelper.framework */; };
+		3C24EE5622F9689900A81B08 /* JKIAPHelper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3C24EE4E22F9689900A81B08 /* JKIAPHelper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C697E8521194BC500DACD60 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C697E8421194BC500DACD60 /* AppDelegate.m */; };
 		3C697E8821194BC500DACD60 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C697E8721194BC500DACD60 /* ViewController.m */; };
 		3C697E8B21194BC500DACD60 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C697E8921194BC500DACD60 /* Main.storyboard */; };
@@ -17,17 +31,38 @@
 		3C697ECC21199E2A00DACD60 /* SAMKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C697EC521199E2A00DACD60 /* SAMKeychain.m */; };
 		3C697ECD21199E2A00DACD60 /* SAMKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C697EC721199E2A00DACD60 /* SAMKeychainQuery.m */; };
 		3C697ECE21199E2A00DACD60 /* SAMKeychain.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3C697EC921199E2A00DACD60 /* SAMKeychain.bundle */; };
-		3CB70FFE218736670009FF44 /* JKJailbreakDetectTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FF1218736670009FF44 /* JKJailbreakDetectTool.m */; };
-		3CB70FFF218736670009FF44 /* JKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FF2218736670009FF44 /* JKReachability.m */; };
-		3CB71000218736670009FF44 /* JKIAPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FF7218736670009FF44 /* JKIAPManager.m */; };
-		3CB71001218736670009FF44 /* JKIAPConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FF8218736670009FF44 /* JKIAPConfig.m */; };
-		3CB71002218736670009FF44 /* JKIAPTransactionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FFB218736670009FF44 /* JKIAPTransactionModel.m */; };
-		3CB71003218736670009FF44 /* JKIAPVerifyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FFC218736670009FF44 /* JKIAPVerifyManager.m */; };
-		3CB71004218736670009FF44 /* JKIAPActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB70FFD218736670009FF44 /* JKIAPActivityIndicator.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3C24EE5322F9689900A81B08 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3C697E7821194BC500DACD60 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3C24EE4D22F9689900A81B08;
+			remoteInfo = JKIAPHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3C24EE5A22F9689900A81B08 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3C24EE5622F9689900A81B08 /* JKIAPHelper.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3C044A8F211C72A900F4AC24 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		3C18D6B7239F9A14004566B2 /* JKIAPActivityIndicatorProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKIAPActivityIndicatorProtocol.h; sourceTree = "<group>"; };
+		3C18D6C723A0CB30004566B2 /* JKReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKReachability.m; sourceTree = "<group>"; };
+		3C18D6C823A0CB30004566B2 /* JKReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKReachability.h; sourceTree = "<group>"; };
+		3C24EE4E22F9689900A81B08 /* JKIAPHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JKIAPHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C697E8021194BC500DACD60 /* IPADemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPADemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C697E8321194BC500DACD60 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3C697E8421194BC500DACD60 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,14 +82,12 @@
 		3CB70FEF218736670009FF44 /* JKIAPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKIAPManager.h; sourceTree = "<group>"; };
 		3CB70FF0218736670009FF44 /* JKIAPPayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKIAPPayDelegate.h; sourceTree = "<group>"; };
 		3CB70FF1218736670009FF44 /* JKJailbreakDetectTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKJailbreakDetectTool.m; sourceTree = "<group>"; };
-		3CB70FF2218736670009FF44 /* JKReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKReachability.m; sourceTree = "<group>"; };
 		3CB70FF3218736670009FF44 /* JKIAPHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKIAPHelp.h; sourceTree = "<group>"; };
 		3CB70FF4218736670009FF44 /* JKIAPActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKIAPActivityIndicator.h; sourceTree = "<group>"; };
 		3CB70FF5218736670009FF44 /* JKIAPVerifyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKIAPVerifyManager.h; sourceTree = "<group>"; };
 		3CB70FF6218736670009FF44 /* JKIAPTransactionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKIAPTransactionModel.h; sourceTree = "<group>"; };
 		3CB70FF7218736670009FF44 /* JKIAPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKIAPManager.m; sourceTree = "<group>"; };
 		3CB70FF8218736670009FF44 /* JKIAPConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKIAPConfig.m; sourceTree = "<group>"; };
-		3CB70FF9218736670009FF44 /* JKReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKReachability.h; sourceTree = "<group>"; };
 		3CB70FFA218736670009FF44 /* JKJailbreakDetectTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKJailbreakDetectTool.h; sourceTree = "<group>"; };
 		3CB70FFB218736670009FF44 /* JKIAPTransactionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKIAPTransactionModel.m; sourceTree = "<group>"; };
 		3CB70FFC218736670009FF44 /* JKIAPVerifyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKIAPVerifyManager.m; sourceTree = "<group>"; };
@@ -62,10 +95,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3C24EE4B22F9689900A81B08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3C697E7D21194BC500DACD60 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C24EE5522F9689900A81B08 /* JKIAPHelper.framework in Frameworks */,
 				3C044A90211C72A900F4AC24 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +120,27 @@
 				3C044A8F211C72A900F4AC24 /* StoreKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3C18D6B923A09808004566B2 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				3CB70FF4218736670009FF44 /* JKIAPActivityIndicator.h */,
+				3CB70FFD218736670009FF44 /* JKIAPActivityIndicator.m */,
+				3C18D6B7239F9A14004566B2 /* JKIAPActivityIndicatorProtocol.h */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		3C18D6CB23A0CC62004566B2 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				3CB70FEF218736670009FF44 /* JKIAPManager.h */,
+				3CB70FF7218736670009FF44 /* JKIAPManager.m */,
+				3CB70FF5218736670009FF44 /* JKIAPVerifyManager.h */,
+				3CB70FFC218736670009FF44 /* JKIAPVerifyManager.m */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		3C697E7721194BC500DACD60 = {
@@ -96,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				3C697E8021194BC500DACD60 /* IPADemo.app */,
+				3C24EE4E22F9689900A81B08 /* JKIAPHelper.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -148,21 +211,17 @@
 			isa = PBXGroup;
 			children = (
 				3CB70FF3218736670009FF44 /* JKIAPHelp.h */,
-				3CB70FEF218736670009FF44 /* JKIAPManager.h */,
-				3CB70FF7218736670009FF44 /* JKIAPManager.m */,
+				3C18D6CB23A0CC62004566B2 /* Manager */,
+				3C18D6B923A09808004566B2 /* Activity */,
+				3C18D6C823A0CB30004566B2 /* JKReachability.h */,
+				3C18D6C723A0CB30004566B2 /* JKReachability.m */,
 				3CB70FF0218736670009FF44 /* JKIAPPayDelegate.h */,
 				3CB70FF1218736670009FF44 /* JKJailbreakDetectTool.m */,
-				3CB70FF9218736670009FF44 /* JKReachability.h */,
-				3CB70FF2218736670009FF44 /* JKReachability.m */,
-				3CB70FF4218736670009FF44 /* JKIAPActivityIndicator.h */,
 				3CB70FF6218736670009FF44 /* JKIAPTransactionModel.h */,
 				3CB70FEE218736670009FF44 /* JKIAPConfig.h */,
 				3CB70FF8218736670009FF44 /* JKIAPConfig.m */,
 				3CB70FFA218736670009FF44 /* JKJailbreakDetectTool.h */,
 				3CB70FFB218736670009FF44 /* JKIAPTransactionModel.m */,
-				3CB70FF5218736670009FF44 /* JKIAPVerifyManager.h */,
-				3CB70FFC218736670009FF44 /* JKIAPVerifyManager.m */,
-				3CB70FFD218736670009FF44 /* JKIAPActivityIndicator.m */,
 			);
 			name = JKIAPHelp;
 			path = ../JKIAPHelp;
@@ -170,7 +229,43 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		3C24EE4922F9689900A81B08 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C18D6BC23A0C51D004566B2 /* JKIAPHelp.h in Headers */,
+				3C18D6BF23A0C52C004566B2 /* JKIAPPayDelegate.h in Headers */,
+				3C18D6B8239F9A14004566B2 /* JKIAPActivityIndicatorProtocol.h in Headers */,
+				3C18D6C323A0C564004566B2 /* JKJailbreakDetectTool.h in Headers */,
+				3C18D6CD23A0E75B004566B2 /* SAMKeychain.h in Headers */,
+				3C18D6CA23A0CB30004566B2 /* JKReachability.h in Headers */,
+				3C18D6CC23A0E754004566B2 /* SAMKeychainQuery.h in Headers */,
+				3C18D6C123A0C540004566B2 /* JKIAPTransactionModel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		3C24EE4D22F9689900A81B08 /* JKIAPHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3C24EE5722F9689900A81B08 /* Build configuration list for PBXNativeTarget "JKIAPHelper" */;
+			buildPhases = (
+				3C24EE4922F9689900A81B08 /* Headers */,
+				3C24EE4A22F9689900A81B08 /* Sources */,
+				3C24EE4B22F9689900A81B08 /* Frameworks */,
+				3C24EE4C22F9689900A81B08 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JKIAPHelper;
+			productName = JKIAPHelper;
+			productReference = 3C24EE4E22F9689900A81B08 /* JKIAPHelper.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		3C697E7F21194BC500DACD60 /* IPADemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3C697E9621194BD900DACD60 /* Build configuration list for PBXNativeTarget "IPADemo" */;
@@ -178,10 +273,12 @@
 				3C697E7C21194BC500DACD60 /* Sources */,
 				3C697E7D21194BC500DACD60 /* Frameworks */,
 				3C697E7E21194BC500DACD60 /* Resources */,
+				3C24EE5A22F9689900A81B08 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3C24EE5422F9689900A81B08 /* PBXTargetDependency */,
 			);
 			name = IPADemo;
 			productName = IPADemo;
@@ -197,6 +294,10 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = kane;
 				TargetAttributes = {
+					3C24EE4D22F9689900A81B08 = {
+						CreatedOnToolsVersion = 10.3;
+						LastSwiftMigration = 1030;
+					};
 					3C697E7F21194BC500DACD60 = {
 						CreatedOnToolsVersion = 10.0;
 						SystemCapabilities = {
@@ -221,11 +322,19 @@
 			projectRoot = "";
 			targets = (
 				3C697E7F21194BC500DACD60 /* IPADemo */,
+				3C24EE4D22F9689900A81B08 /* JKIAPHelper */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3C24EE4C22F9689900A81B08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3C697E7E21194BC500DACD60 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -240,26 +349,38 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3C24EE4A22F9689900A81B08 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C18D6C223A0C55D004566B2 /* JKIAPConfig.m in Sources */,
+				3C18D6C423A0C567004566B2 /* JKIAPTransactionModel.m in Sources */,
+				3C18D6C023A0C532004566B2 /* JKJailbreakDetectTool.m in Sources */,
+				3C18D6C923A0CB30004566B2 /* JKReachability.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3C697E7C21194BC500DACD60 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				3C697E8821194BC500DACD60 /* ViewController.m in Sources */,
-				3CB70FFE218736670009FF44 /* JKJailbreakDetectTool.m in Sources */,
-				3CB71002218736670009FF44 /* JKIAPTransactionModel.m in Sources */,
 				3C697ECC21199E2A00DACD60 /* SAMKeychain.m in Sources */,
-				3CB71004218736670009FF44 /* JKIAPActivityIndicator.m in Sources */,
-				3CB71000218736670009FF44 /* JKIAPManager.m in Sources */,
 				3C697ECD21199E2A00DACD60 /* SAMKeychainQuery.m in Sources */,
 				3C697E9321194BD900DACD60 /* main.m in Sources */,
-				3CB71001218736670009FF44 /* JKIAPConfig.m in Sources */,
-				3CB70FFF218736670009FF44 /* JKReachability.m in Sources */,
-				3CB71003218736670009FF44 /* JKIAPVerifyManager.m in Sources */,
 				3C697E8521194BC500DACD60 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3C24EE5422F9689900A81B08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3C24EE4D22F9689900A81B08 /* JKIAPHelper */;
+			targetProxy = 3C24EE5322F9689900A81B08 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3C697E8921194BC500DACD60 /* Main.storyboard */ = {
@@ -281,6 +402,80 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3C24EE5822F9689900A81B08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = JKIAPHelper/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.JKIAPHelper;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3C24EE5922F9689900A81B08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = JKIAPHelper/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.JKIAPHelper;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		3C697E9421194BD900DACD60 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -398,8 +593,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = LLNPYUK7W4;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YJVUC2HB77;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IPADemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -407,9 +603,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ly.VOEZ;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kane.refueling;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "voez0813-2";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -419,8 +615,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YJVUC2HB77;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IPADemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -428,7 +625,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ly.VOEZ;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kane.refueling;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -438,6 +635,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3C24EE5722F9689900A81B08 /* Build configuration list for PBXNativeTarget "JKIAPHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C24EE5822F9689900A81B08 /* Debug */,
+				3C24EE5922F9689900A81B08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3C697E7B21194BC500DACD60 /* Build configuration list for PBXProject "IPADemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

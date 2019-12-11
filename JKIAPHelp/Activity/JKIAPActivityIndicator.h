@@ -7,26 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "JKIAPActivityIndicatorProtocol.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JKIAPActivityIndicator : NSObject
+@interface JKIAPActivityIndicator : NSObject<JKIAPActivityIndicatorProtocol>
 
 
-
-
-
-/**
- * 活动指示器弹出框开始
- */
-- (void)start;
-
-/**
- * 活动指示器弹出框结束
- */
-- (void)stop;
-
-- (void)setLableMessage:(NSString *)msg;
 @end
 
 NS_ASSUME_NONNULL_END
