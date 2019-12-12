@@ -10,6 +10,4 @@
 #import "JKIAPTransactionModel.h"
 #import "JKIAPPayDelegate.h"
 #import "JKIAPActivityIndicatorProtocol.h"
-#import "SAMKeychain.h"
-#import "SAMKeychainQuery.h"
 #import "JKIAPVerifyManager.h"

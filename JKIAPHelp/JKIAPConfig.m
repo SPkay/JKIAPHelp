@@ -9,14 +9,16 @@
 #import "JKIAPConfig.h"
 #import "JKIAPManager.h"
 
-NSString *const JKIAPErrorDomain = @"JKIAPErrorDomain";
-static BOOL sendLog;
+
+static BOOL _sendLog = YES;
+static BOOL _shouldJailbrokenPay = YES;
+static BOOL _enableLoading = YES;
 
 @implementation JKIAPConfig
 
 +(void)sendLog:(NSString *)format, ... {
 
-    if (sendLog) {
+    if (_sendLog) {
         va_list paramList;
         va_start(paramList,format);
         NSString* log = [[NSString alloc]initWithFormat:format arguments:paramList];
@@ -31,10 +33,25 @@ static BOOL sendLog;
 }
 
 + (BOOL)enableLog{
-    return sendLog;
+    return _sendLog;
 }
 + (void)setEnableLog:(BOOL)enableLog{
-    sendLog = enableLog;
+    _sendLog = enableLog;
+}
+
++ (BOOL)shouldJailbrokenPay{
+    return _shouldJailbrokenPay;
+}
++ (void)setShouldJailbrokenPay:(BOOL)shouldJailbrokenPay{
+    _shouldJailbrokenPay = shouldJailbrokenPay;
+}
+
++ (BOOL)enableLoading{
+    return _enableLoading;
+}
+
++ (void)setEnableLoading:(BOOL)enableLoading{
+    _enableLoading = enableLoading;
 }
 
 @end

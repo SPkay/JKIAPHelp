@@ -12,7 +12,7 @@
 #import "JKIAPConfig.h"
 #import "JKIAPVerifyManager.h"
 #import "JKIAPActivityIndicator.h"
-
+#import "NSError+JKIAPError.h"
 
 
 typedef void(^ReceiptBlock)(NSString *receipt);
@@ -30,17 +30,10 @@ typedef void(^ReceiptBlock)(NSString *receipt);
     JKReachability *_reachability;
 }
 
-/**
- 是否允许越狱支付
- */
-@property (nonatomic, assign) BOOL shouldJailbrokenPay;
 
+
+/// 当前loading状态
 @property (nonatomic, assign) JKIAPLoadingStatus currentStatus;
-
-/**
- 是否允许Loading
- */
-@property (nonatomic, assign) BOOL enableLoading;
 
 /**
  * 获取商品列表请求.
@@ -65,24 +58,13 @@ static  JKIAPManager *manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         manager = [JKIAPManager new];
-        manager.shouldJailbrokenPay = NO;
-        JKIAPConfig.enableLog = YES;
-        manager.enableLoading = YES;
         [manager addNotificationObserver];
-     
     });
     
     return manager;
 }
 
 
-
-/**
- * 是否允许越狱支付,默认NO
- */
-- (void)shouldJailbrokenPay:(BOOL)jailbrokenPay{
-      _shouldJailbrokenPay = jailbrokenPay;
-}
 
 - (BOOL)currentDeviceIsJailbroken{
     return  [JKJailbreakDetectTool detectCurrentDeviceIsJailbroken];
@@ -93,7 +75,7 @@ static  JKIAPManager *manager = nil;
  @return YES:支持 NO:不支持
  @note 家长控制关闭iap，不允许越狱机器购买时 返回NO
  */
-- (BOOL)judgeIsCanPay{
+- (BOOL)checkCanPay{
     if ([self judgeJailbrokenCanPay]) {
         return [SKPaymentQueue canMakePayments];
     }
@@ -107,27 +89,13 @@ static  JKIAPManager *manager = nil;
  @return 不允许越狱机器购买时 返回NO
  */
 - (BOOL)judgeJailbrokenCanPay{
-    if (!self.shouldJailbrokenPay && [JKJailbreakDetectTool detectCurrentDeviceIsJailbroken]) {
+    if (!JKIAPConfig.shouldJailbrokenPay && [JKJailbreakDetectTool detectCurrentDeviceIsJailbroken]) {
         JKIAPLog(@"越狱机器无法购买");
         return NO;
     }
     return YES;
 }
 
-
-/*!
- @method
- @abstract 隐藏Loading（不建议）
- @discussion 防止用户多次重复购买，特加入loading
- @author bladebao
- */
-- (void)hideLoading:(BOOL)hide{
-    _enableLoading = !hide;
-}
-
-- (void)enableLog:(BOOL)isEnable{
-    JKIAPConfig.enableLog = isEnable;
-}
 
 
 /**
@@ -195,68 +163,51 @@ static  JKIAPManager *manager = nil;
  * @param productIdentifiers 产品标识.
  */
 - (void)fetchProductInfoWithProductIdentifiers:(NSSet<NSString *> *)productIdentifiers{
-    if (self.currentStatus != JKIAPLoadingStatus_None) {
-        
-        if (_isBuyProdutTofetchList) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-                [self.delegate onIAPPayFailue:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Paying userInfo:@{NSLocalizedDescriptionKey:@"正在购买或者请求商品中...."}]];
-            }
-        }else{
-            if (self.delegate && [self.delegate respondsToSelector:@selector(onLaunProductListFinish:withError:)]) {
-                [self.delegate onLaunProductListFinish:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Paying userInfo:@{NSLocalizedDescriptionKey:@"正在购买或者请求商品中...."}]];
-            }
-        }
-        return;
+    NSError *error = nil;
+    if (!_userId) {
+        error = [NSError errorWithJKIAPCode:JKIAPError_NotRegistered];
+        goto sendMsg;
     }
-    
+    if (self.currentStatus != JKIAPLoadingStatus_None) {
+        error = [NSError errorWithJKIAPCode:JKIAPError_Paying];
+        goto sendMsg;
+    }
+   
     if (![self judgeJailbrokenCanPay]) {
-        if (_isBuyProdutTofetchList) {
-            
-            if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-                [self.delegate onIAPPayFailue:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Jailbroken userInfo:@{NSLocalizedDescriptionKey:@"越狱机器无法购买...."}]];
-            }
-        }else{
-            if (self.delegate && [self.delegate respondsToSelector:@selector(onLaunProductListFinish:withError:)]) {
-                [self.delegate onLaunProductListFinish:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Jailbroken userInfo:@{NSLocalizedDescriptionKey:@"越狱机器无法购买...."}]];
-            }
-        }
-        return;
+        error = [NSError errorWithJKIAPCode:JKIAPError_Jailbroken];
+        goto sendMsg;
     }
     
     if (!productIdentifiers) {
-        if (_isBuyProdutTofetchList) {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-                [self.delegate onIAPPayFailue:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Parameter userInfo:@{NSLocalizedDescriptionKey:@"参数无效...."}]];
-            }
-        }else{
-            if (self.delegate && [self.delegate respondsToSelector:@selector(onLaunProductListFinish:withError:)]) {
-                [self.delegate onLaunProductListFinish:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Parameter userInfo:@{NSLocalizedDescriptionKey:@"参数无效...."}]];
-            }
-        }
-        
-        return;
+        error = [NSError errorWithJKIAPCode:JKIAPError_ProductId];
+        goto sendMsg;
     }
+    if (![SKPaymentQueue canMakePayments]) {
+         error = [NSError errorWithJKIAPCode:JKIAPError_Permission];
+    }
+    
+    sendMsg :
+    if (error) {
+       if (_isBuyProdutTofetchList) {
+           [self sendDelegateErrorMethod:@selector(onIAPPayFailue:withError:) error:error];
+        }else{
+           [self sendDelegateErrorMethod:@selector(onLaunProductListFinish:withError:) error:error];
+            }
+        return;
+       }
     
     if (self.currentProductRequest) {
         [self.currentProductRequest cancel];
         self.currentProductRequest = nil;
     }
     
-    if ([SKPaymentQueue canMakePayments]) {
+    
         self.currentStatus = JKIAPLoadingStatus_CheckingProduct;
         
         SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];
         self.currentProductRequest = request;
         request.delegate = self;
         [request start];
-    
-    }else {
-        
-        NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Permission userInfo:@{NSLocalizedDescriptionKey : @"用户禁止应用内付费购买"}];
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onLaunProductListFinish:withError:)]) {
-            [self.delegate onLaunProductListFinish:nil withError:error];
-        }
-    }
     
   
 }
@@ -266,15 +217,24 @@ static  JKIAPManager *manager = nil;
  恢复购买
  */
 - (void)restoreProducts{
+     [self checkUnfinishedTransaction];
+    NSError *error = nil;
+    if (!_userId) {
+     error = [NSError errorWithJKIAPCode:JKIAPError_NotRegistered];
+    }
+    
     if (self.currentStatus != JKIAPLoadingStatus_None) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPRestoreResult:withError:)]) {
-            [self.delegate onIAPRestoreResult:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Paying userInfo:@{NSLocalizedDescriptionKey : @"正在购买或者请求商品中...."}]];
-        }
-    }else{
+         error = [NSError errorWithJKIAPCode:JKIAPError_Paying];
+    }
+    
+    if (error) {
+        [self sendDelegateErrorMethod:@selector(onIAPRestoreResult:withError:) error:error];
+        return;
+    }
        
         self.currentStatus = JKIAPLoadingStatus_Restoring;
          [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
-    }
+    
 }
 
 
@@ -283,28 +243,34 @@ static  JKIAPManager *manager = nil;
 - (void)buyProductWithProductIdentifier:(NSString *)productIdentifier
                          appproductType:( AppleProductType)appproductType
                                 orderId:(NSString *)orderId {
+    
+      [self checkUnfinishedTransaction];
+    
     if ([orderId isEqualToString:_appOrderID]) {
-        return;
-    }
+           return;
+       }
     
-    [self checkUnfinishedTransaction];
+      NSError *error = nil;
+      if (!_userId) {
+       error = [NSError errorWithJKIAPCode:JKIAPError_NotRegistered];
+          goto checkError;
+      }
     
-    if (self.currentStatus != JKIAPLoadingStatus_None) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-            [self.delegate onIAPPayFailue:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Paying userInfo:@{NSLocalizedDescriptionKey:@"正在购买或者请求商品中...."}]];
-        }
-        return;
-    }
+     if (self.currentStatus != JKIAPLoadingStatus_None) {
+           error = [NSError errorWithJKIAPCode:JKIAPError_Paying];
+         goto checkError;
+     }
+    
     if (!productIdentifier || ! orderId) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-            [self.delegate onIAPPayFailue:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Parameter userInfo:@{NSLocalizedDescriptionKey:@"购买失败,参数错误...."}]];
-        }
-        return;
+        error = [NSError errorWithJKIAPCode:JKIAPError_Parameter];
+        goto checkError;
     }
     if (![_reachability currentReachable]) {
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-            [self.delegate onIAPPayFailue:nil withError:[NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_Net userInfo:@{NSLocalizedDescriptionKey:@"无法连接网络...."}]];
-        }
+         error = [NSError errorWithJKIAPCode:JKIAPError_Net];
+    }
+    checkError :
+    if (error) {
+        [self sendDelegateErrorMethod:@selector(onIAPPayFailue:withError:) error:error];
         return;
     }
 
@@ -411,10 +377,8 @@ static  JKIAPManager *manager = nil;
              [[SKPaymentQueue defaultQueue] addPayment:payment];
         }
     }else{
-          error = [NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_ProductId userInfo:@{NSLocalizedDescriptionKey : @"没有购买的物品"}];
-        if (self.delegate && [self.delegate respondsToSelector:@selector(onIAPPayFailue:withError:)]) {
-            [self.delegate onIAPPayFailue:nil withError:error];
-        }
+        error = [NSError errorWithJKIAPCode:JKIAPError_ProductId];
+        [self sendDelegateErrorMethod:@selector(onIAPPayFailue:withError:) error:error];
         self.currentStatus = JKIAPLoadingStatus_None;
     }
     
@@ -682,7 +646,7 @@ static  JKIAPManager *manager = nil;
                 {
                     transactionModel.transactionStatus = TransactionStatusSeriverFailed;
                      [strongSelf finishTransationWithModel:transactionModel];
-                    NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_VerifyInvalid userInfo:@{NSLocalizedDescriptionKey:@"服务器验证失败"}];
+                    NSError *error = [NSError errorWithJKIAPCode:JKIAPError_VerifyInvalid];
                     
                     if (strongSelf->_currentModel && [strongSelf.delegate respondsToSelector:@selector(onDistributeGoodsFailue:withError:)]) {
                       
@@ -705,7 +669,7 @@ static  JKIAPManager *manager = nil;
                 default:
                 {
                     transactionModel.transactionStatus = TransactionStatusSeriverError;
-                    NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_VerifyInvalid userInfo:@{NSLocalizedDescriptionKey:@"验证请求网络错误"}];
+                    NSError *error = [NSError errorWithJKIAPCode:JKIAPError_VerifyInvalid];
                     if (strongSelf.currentStatus != JKIAPLoadingStatus_None && [strongSelf.delegate respondsToSelector:@selector(onDistributeGoodsFailue:withError:)]) {
                         if ( strongSelf->_currentModel) {
                             strongSelf.currentStatus = JKIAPLoadingStatus_None;
@@ -783,8 +747,17 @@ static  JKIAPManager *manager = nil;
 
 #pragma mark - privateMethods
 
+
+- (void)sendDelegateErrorMethod:(SEL)sel error:(NSError *)error{
+    if (self.delegate && [self.delegate respondsToSelector:sel]) {
+           [self.delegate performSelector:sel withObject:nil withObject:error];
+    }
+ 
+}
+
+
 - (void)changLoadingStatus:(JKIAPLoadingStatus)status{
-    if (_enableLoading) {
+    if (JKIAPConfig.enableLoading) {
           NSString *msg = nil;
              switch (status) {
                  case JKIAPLoadingStatus_CheckingProduct:
@@ -842,14 +815,14 @@ static  JKIAPManager *manager = nil;
     
 }
 
-#pragma mark -  Getter
+#pragma mark -  Getter && Setter
 
 - (id<JKIAPActivityIndicatorProtocol>)activityIndicatorController{
     if (!_activityIndicatorController) {
         _activityIndicatorController = [JKIAPActivityIndicator new];
     }
     
-    if (_enableLoading) {
+    if (JKIAPConfig.enableLoading) {
         return _activityIndicatorController;
     }
     return nil;

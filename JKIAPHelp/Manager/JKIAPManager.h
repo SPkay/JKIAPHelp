@@ -12,16 +12,6 @@
 #import <StoreKit/StoreKit.h>
 #import "JKIAPActivityIndicatorProtocol.h"
 
-typedef enum : NSUInteger {
-    JKIAPError_Paying = 101,
-    JKIAPError_Jailbroken = 102,
-    JKIAPError_Parameter = 103,
-    JKIAPError_Permission= 104,
-    JKIAPError_ProductId= 105,
-    JKIAPError_Receipt = 106,
-    JKIAPError_VerifyInvalid = 107,
-    JKIAPError_Net = 108,
-} JKIAPErrorCode;
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /* 购买代理 */
 @property (nonatomic,weak)id<JKIAPPayDelegate> delegate;
+
 /* 活动指示器,如果没有就使用默认的 */
 @property (nonatomic,strong)id<JKIAPActivityIndicatorProtocol> activityIndicatorController;
 /**
@@ -40,11 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedManager;
 
 
-
-/**
- * 是否允许越狱支付,默认NO
- */
-- (void)shouldJailbrokenPay:(BOOL)jailbrokenPay;
 
 /**
  * 当前设备是否是越狱设备.
@@ -58,26 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @return YES:支持 NO:不支持
 @note 家长控制关闭iap，不允许越狱机器购买时 返回NO
 */
-- (BOOL)judgeIsCanPay;
-
-
-/*!
- @method
- @abstract 隐藏Loading（不建议）
- @discussion 防止用户多次重复购买，特加入loading
- @author bladebao
- */
-- (void)hideLoading:(BOOL)hide;
-
-
-
-/**
- 是否发送Log
-
- @param isEnable 是否发送Log
- */
-- (void)enableLog:(BOOL)isEnable;
-
+- (BOOL)checkCanPay;
 
 
 /**

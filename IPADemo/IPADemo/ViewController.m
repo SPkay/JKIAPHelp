@@ -19,15 +19,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *accountField;
 @property (nonatomic, strong) NSMutableArray *logArray;
 @end
-
+#define NonConsumable @"com.rayark.cytus2.bundle004"
+#define Consumable @"com.rayark.cytus2.bundle004"
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-//    VOEZ_BuyMusic消耗  VOEZ_BuyMusic2 非消耗
+
     
-    [[JKIAPManager sharedManager] shouldJailbrokenPay:YES];
     [JKIAPManager sharedManager].delegate = self;
     self.accountField.text = @"test1";
    
@@ -57,7 +56,7 @@
 - (IBAction)buyAction2:(id)sender {
     NSString *orderId = [NSString stringWithFormat:@"%d",arc4random()];
     
-    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"com.oil.ref" appproductType:AppleProductType_NonConsumable orderId:orderId];
+    [[JKIAPManager sharedManager] buyProductWithProductIdentifier:NonConsumable appproductType:AppleProductType_NonConsumable orderId:orderId];
 }
 - (IBAction)restore:(id)sender {
     [[JKIAPManager sharedManager] restoreProducts];
