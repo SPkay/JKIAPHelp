@@ -33,12 +33,13 @@
  */
 - (void)showActivityWithMessage:(NSString *)msg{
     dispatch_async(dispatch_get_main_queue(), ^{
+            if (msg) {
+                self.label.text = msg;
+                  }
            if (self.actIndicatorView.isAnimating == YES) {
                return ;
            }
-        if (msg) {
-                self.label.text = msg;
-           }
+       
            self.backView.alpha = 0;
            [self layoutViews];
            [self.actIndicatorView startAnimating];

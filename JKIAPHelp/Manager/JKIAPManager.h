@@ -50,41 +50,37 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  注册支付事务监听, 并且开始支付凭证验证队列.
 @warning ⚠️ 请在用户登录时和用户重新启动 APP 时调用.
- @param userid 用户 ID.
  */
-- (void)registerPayWithUserID:(NSString *)userid;
+- (void)registerPay;
 
 
 
 /**
  注册支付事务监听, 并且开始支付凭证验证队列.(指定钥匙串账号和服务区)
 
- @param userid 用户 ID.
  @param keychainService keychainService
  @param keychainAccount keychainAccount
  */
-- (void)registerPayWithUserID:(NSString *)userid
-              keychainService:(NSString *)keychainService
+- (void)registerPayWithKeychainService:(NSString *)keychainService
               keychainAccount:(NSString *)keychainAccount;
 
 
 
 /**
  购买物品
-
+@param userid 用户ID
  @param productIdentifier 物品id
- @param appproductType 类型
  @param orderId 订单号
  */
-- (void)buyProductWithProductIdentifier:(NSString *)productIdentifier
-                         appproductType:( AppleProductType)appproductType
+- (void)buyProductWithUserID:(NSString *)userid
+           productIdentifier:(NSString *)productIdentifier
                                 orderId:(NSString *)orderId;
+
 /**
- 注销支付管理
+ 购买物品
+@param payment SKPayment
  */
-- (void)unRegisterPay;
-
-
+- (void)buyProductWithSKPayment:(SKPayment  *)payment;
 /**
  * 获取产品信息.
  *
@@ -100,6 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
+/// 检测未完成订单
+-(void)checkUnfinishTransaction;
 
 @end
 

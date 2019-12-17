@@ -9,6 +9,7 @@
 #import "JKIAPTransactionModel.h"
 #import "JKIAPConfig.h"
 
+
 @interface JKIAPTransactionModel ()
 @end
 
@@ -18,7 +19,7 @@
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
     NSString *dateString = [formatter stringFromDate:self.transactionDate];
-    return [NSString stringWithFormat:@"productIdentifier: %@, transactionIdentifier: %@, transactionDate: %@, orderNo:%@,  priceTagString: %@, transactionStatus: %lu,userId:%@", self.productIdentifier, self.transactionIdentifier, dateString, self.seriverOrder, self.priceString, (unsigned long)self.transactionStatus,self.userId];
+    return [NSString stringWithFormat:@"productIdentifier: %@, transactionIdentifier: %@, transactionDate: %@,applicationUsername :%@, transactionStatus: %lu", self.productIdentifier, self.transactionIdentifier, dateString,self.applicationUsername, (unsigned long)self.transactionStatus];
 }
 
 
@@ -32,7 +33,7 @@
         _transactionDate = [aDecoder decodeObjectForKey:@"transactionDate"];
         _seriverOrder = [aDecoder decodeObjectForKey:@"seriverOrder"];
         _priceString = [aDecoder decodeObjectForKey:@"priceString"];
-     _appleProductType = [aDecoder decodeIntegerForKey:@"appleProductType"];
+     _applicationUsername = [aDecoder decodeObjectForKey:@"applicationUsername"];
         _userId =[aDecoder decodeObjectForKey:@"userId"];
         _transactionStatus = [aDecoder decodeIntegerForKey:@"transactionStatus"];
         _appStoreReceipt = [aDecoder decodeObjectForKey:@"appStoreReceipt"];
@@ -48,7 +49,7 @@
     [aCoder encodeObject:self.seriverOrder forKey:@"seriverOrder"];
     [aCoder encodeObject:self.priceString forKey:@"priceString"];
 
-    [aCoder encodeInteger:self.appleProductType forKey:@"appleProductType"];
+    [aCoder encodeObject:self.applicationUsername forKey:@"applicationUsername"];
     [aCoder encodeObject:self.userId forKey:@"userId"];
     [aCoder encodeObject:self.appStoreReceipt forKey:@"appStoreReceipt"];
     
@@ -56,27 +57,34 @@
      [aCoder encodeObject:self.error forKey:@"error"];
 }
 
+
+
 + (instancetype)modelWithProductIdentifier:(NSString *)productIdentifier
-                            appproductType:( AppleProductType)appproductType
-                                     price:(NSString *)price
-                                   orderId:(NSString *)orderId
-                                    userId:(NSString *)userId{
-    
+  applicationUsername:(NSString *)applicationUsername{
     NSParameterAssert(productIdentifier);
-    //NSParameterAssert(orderId);
+       //NSParameterAssert(orderId);
+    
+  JKIAPTransactionModel*model = [JKIAPTransactionModel new];
+          model.productIdentifier = productIdentifier;
+          
+          model.applicationUsername = applicationUsername;
+         
+          model.transactionStatus = 0;
+          model.transactionDate = [NSDate date];
+ 
+    NSError *error = nil;
+    NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+    if (!error) {
+        model.priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
+        model.seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
+        model.userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
+    }
 
-    JKIAPTransactionModel*model = [JKIAPTransactionModel new];
-    model.productIdentifier = productIdentifier;
-    model.priceString = price;
-    model.appleProductType = appproductType;
-    model.seriverOrder = orderId;
-    model.transactionStatus = 0;
-    model.transactionDate = [NSDate date];
-    model.userId = userId;
-    return model;
+    
+      
+       return model;
 }
-
-
 
 #pragma mark - Private
 
@@ -105,12 +113,9 @@
          isTransactionIdentifierMatch =[self.transactionIdentifier isEqualToString:object.transactionIdentifier];
     }
     BOOL isSeriverOrderMatch = YES;
-    if (object.seriverOrder) {
-       isSeriverOrderMatch=  [self.seriverOrder isEqualToString:object.seriverOrder];
+    if (object.applicationUsername) {
+       isSeriverOrderMatch=  [self.applicationUsername  isEqualToString:object.applicationUsername];
     }
-   
- 
-    
     return isTransactionIdentifierMatch && isProductIdentifierMatch&&isSeriverOrderMatch ;
 }
 
@@ -137,4 +142,18 @@
         _seriverOrder = seriverOrder;
     }
 }
+
+- (void)setApplicationUsername:(NSString *)applicationUsername{
+    _applicationUsername = applicationUsername;
+      NSError *error = nil;
+        NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+        if (!error) {
+            _priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
+            _seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
+            _userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
+        }
+}
+
+
 @end

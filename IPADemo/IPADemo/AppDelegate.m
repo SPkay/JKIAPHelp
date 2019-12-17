@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "JKIAPHelp.h"
 @interface AppDelegate ()
 
 @end

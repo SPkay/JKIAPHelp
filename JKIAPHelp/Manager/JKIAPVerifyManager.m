@@ -25,30 +25,23 @@
 @end
 
 @implementation JKIAPVerifyManager
-/**
- * 初始化方法.
- */
-- (instancetype)initWithUserId:(NSString *)userId{
-    self = [super init];
-    if (self) {
-        if (!_keychain_account) {
-            _keychain_account= @"com.jkiap_keychain_account.www";
-        }
-        if (!_keychain_service) {
-            _keychain_service =@"com.jkiap_keychain_service.www";
-        }
-        _userId = userId;
-        _isVerifing = NO;
-        _modelArray = [NSMutableArray new];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeStatus:) name:JKIAPVerifyNotification object:nil];
-    }
-    return self;
-}
 
-- (instancetype)initWithUserId:(NSString *)userId keychainService:(NSString *)keychainService keychainAccount:(NSString *)keychainAccount{
-    _keychain_service = keychainService;
-    _keychain_account = keychainAccount;
-  return   [self initWithUserId:userId];
+- (instancetype)initWithKeychainService:(NSString *)keychainService keychainAccount:(NSString *)keychainAccount{
+    
+    self = [super init];
+  if (self) {
+      _keychain_service = keychainService;
+      _keychain_account = keychainAccount;
+      if (!_keychain_account) {
+          _keychain_account= @"com.jkiap_keychain_account.www";
+      }
+      if (!_keychain_service) {
+          _keychain_service =@"com.jkiap_keychain_service.www";
+      }
+      _isVerifing = NO;
+      _modelArray = [NSMutableArray new];
+  }
+  return self;
 }
 
 - (void)dealloc{
@@ -83,54 +76,55 @@
             return;
         }
     }
- __block   BOOL hasModel = NO;
+
    __block JKIAPTransactionModel *resultModel= transactionModel;
      NSMutableSet *keychainSet = [self fetchAllPaymentTransactionModel];
+    
     [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
         
-        if (transactionModel.seriverOrder ) {
-            if ([model.seriverOrder isEqualToString:transactionModel.seriverOrder]) {
+       
+        
+        if (transactionModel.applicationUsername ) {
+            if ([model.applicationUsername isEqualToString:transactionModel.applicationUsername]) {
                 model.transactionIdentifier = transactionModel.transactionIdentifier;
                 model.transactionStatus = TransactionStatusAppleSucc;
                 if (transactionModel.appStoreReceipt) {
                     model.appStoreReceipt = transactionModel.appStoreReceipt;
                 }
                 resultModel = model;
-                hasModel = YES;
+             
                 *stop = YES;
             }
         }else if ([transactionModel.productIdentifier isEqualToString:model.productIdentifier]) {
+             ///最坏的情况transactionModel只有productIdentifier来对比
                 model.transactionIdentifier = transactionModel.transactionIdentifier;
-            [transactionModel setValue:model.seriverOrder forKey:@"seriverOrder"];
-              [transactionModel setValue:model.userId forKey:@"userId"];
+            transactionModel.applicationUsername = model.applicationUsername;
             if (transactionModel.appStoreReceipt) {
                 model.appStoreReceipt = transactionModel.appStoreReceipt;
             }
                 model.transactionStatus = TransactionStatusAppleSucc;
                   resultModel = model;
-                       hasModel = YES;
                 *stop = YES;
             }
         
       
     }];
-    if (hasModel) {
+    
         //保存更改
         [self savePaymentTransactionModels:keychainSet];
         
         [_modelArray addObject:transactionModel];
         //开始验证
         [self verifingModel:resultModel];
-    }
+    
    
   
 }
 -(void)updatePaymentTransactionModelStatus:(JKIAPTransactionModel *)transactionModel{
     
-    NSString *transactionIdentifier = transactionModel.transactionIdentifier;
       NSMutableSet *keychainSet = [self fetchAllPaymentTransactionModel];
     [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
-        if ([model.transactionIdentifier isEqualToString:transactionIdentifier]) {
+        if ([model isEqual:transactionModel]) {
             model.transactionStatus= transactionModel.transactionStatus;
             if (transactionModel.error) {
                 model.error = transactionModel.error;
@@ -151,13 +145,13 @@
     [keychainSet enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
         if ([model isEqual:transactionModel]) {
             [keychainSet removeObject:model];
-               JKIAPLog(@"完成删除订单:%@",transactionModel.seriverOrder);
+               JKIAPLog(@"完成删除订单:%@",transactionModel);
         }
     }];
     
     
     if (count == keychainSet.count) {
-         JKIAPLog(@"删除订单删除失败:%@",transactionModel.seriverOrder);
+         JKIAPLog(@"删除订单删除失败:%@",transactionModel);
     }
     [self savePaymentTransactionModels:keychainSet];
     
@@ -168,13 +162,13 @@
 - (void)verifingModel:(JKIAPTransactionModel *)transactionModel{
   
     if (_isVerifing) {
-        JKIAPLog(@"正在验证中....%@",_currentModel.seriverOrder);
+        JKIAPLog(@"正在验证中....%@",_currentModel);
         return;
     }
     if (self.delegate && [self.delegate respondsToSelector:@selector(startPaymentTransactionVerifingModel:)]) {
         _isVerifing = YES;
         _currentModel = transactionModel;
-         JKIAPLog(@"开始验证....%@",_currentModel.seriverOrder);
+         JKIAPLog(@"开始验证....%@",_currentModel);
         [self.delegate startPaymentTransactionVerifingModel:transactionModel];
     }
 }
@@ -227,17 +221,7 @@
     [SAMKeychain deletePasswordForService:_keychain_service account:_keychain_account];
 }
 
-- (void)changeStatus:(NSNotification*)notification{
-    
-    [_modelArray removeObject: notification.object];
-    if (_modelArray.count>0) {
-        [self verifingModel:_modelArray.firstObject];
-    }else{
-        _isVerifing = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:JKIAPVerifyFinishNotification object:nil];
-    }
-    
-}
+
 
 
 @end

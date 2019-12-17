@@ -10,15 +10,16 @@
 #import <Foundation/Foundation.h>
 
 typedef enum : NSUInteger {
-    JKIAPError_Paying = 101,//购买中
-    JKIAPError_Jailbroken = 102,//越狱设备
-    JKIAPError_Parameter = 103,//参数错误
-    JKIAPError_Permission= 104,//无权限
-    JKIAPError_ProductId= 105,//没有购买的物品
-    JKIAPError_Receipt = 106,//凭据错误
-    JKIAPError_VerifyInvalid = 107,//验证订单失效
-    JKIAPError_Net = 108,//网络错误
-    JKIAPError_NotRegistered = 109,//未注册IAP
+    JKIAPError_Paying = 70101,//购买中
+    JKIAPError_Jailbroken = 70102,//越狱设备
+    JKIAPError_Parameter = 70103,//参数错误
+    JKIAPError_Permission= 70104,//无权限
+    JKIAPError_ProductId= 70105,//没有购买的物品
+    JKIAPError_Receipt = 70106,//凭据错误
+    JKIAPError_VerifyInvalid = 70107,//验证订单失败
+    JKIAPError_Net = 70108,//网络错误
+    JKIAPError_NotRegistered = 70109,//未注册IAP
+    JKIAPError_HasUnfinishedTransaction = 70110,//有未验证完的订单
 } JKIAPErrorCode;
 
 

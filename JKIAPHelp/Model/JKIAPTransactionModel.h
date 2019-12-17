@@ -7,12 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-//苹果商品的几种类型
-typedef enum : NSUInteger {
-    AppleProductType_Unknow=0,
-    AppleProductType_Consumable,//消费类产品(单笔,游戏币)
-    AppleProductType_NonConsumable,//非消费类产品
-} AppleProductType;
+
 
 typedef NS_ENUM(NSUInteger, TransactionStatus) {
     TransactionStatusWaitApple,
@@ -28,10 +23,6 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
 
 #pragma mark - Properties
 
-/**
- * 用户 id.
- */
-@property(nonatomic, copy, readonly) NSString *userId;
 
 /**
  * 事务 id.
@@ -43,9 +34,6 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
  */
 @property(nonatomic, strong, readonly) NSDate *transactionDate;
 
-/* 物品类型 */
-@property (nonatomic,assign)AppleProductType appleProductType;
-
 /**
  * 商品 id.
  */
@@ -53,16 +41,9 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
 
 
 
-/**
- * 后台配置的订单号.
- */
-@property(nonatomic, copy,readonly) NSString *seriverOrder;
 
-/**
- * 价格字符.
- */
-@property(nonatomic, copy) NSString *priceString;
-
+/// 请求里的applicationUsername
+@property (nonatomic, copy) NSString *applicationUsername;
 
 
 /**
@@ -81,6 +62,28 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
  */
 @property (nonatomic, strong) NSError *error;
 
+
+/* 以下属性,只有使用订单号参数购买方式:
+ - (void)buyProductWithUserID:(NSString *)userid
+ productIdentifier:(NSString *)productIdentifier
+                      orderId:(NSString *)orderId; 才有值 */
+
+/**
+ * 用户 id.
+ */
+@property(nonatomic, copy, readonly) NSString *userId;
+
+/**
+ * 后台配置的订单号.
+ */
+@property(nonatomic, copy,readonly) NSString *seriverOrder;
+
+/**
+ * 价格字符.
+ */
+@property(nonatomic, copy) NSString *priceString;
+
+
 #pragma mark - Method
 
 /**
@@ -89,17 +92,10 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
  * @warning: 所有数据都必须有值, 否则会报错, 并返回 nil.
  *
  * @param productIdentifier       商品 id.
-  * @param appproductType   物品类型
- * @param price   商品价格
- * @param orderId         服务器订单号
- * @param userId         用户名
-
+ * @param applicationUsername   applicationUsername
  */
 + (instancetype)modelWithProductIdentifier:(NSString *)productIdentifier
-                            appproductType:( AppleProductType)appproductType
-                                     price:(NSString *)price
-                                   orderId:(NSString *)orderId
-                                    userId:(NSString *)userId;
+                       applicationUsername:(NSString *)applicationUsername;
 
 
 @end

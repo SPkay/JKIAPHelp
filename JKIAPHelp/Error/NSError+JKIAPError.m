@@ -42,11 +42,13 @@ NSString *const JKIAPErrorDomain = @"JKIAPErrorDomain";
             case JKIAPError_NotRegistered:
             msg = @"请先注册JKIAP";
             break;
+            case JKIAPError_HasUnfinishedTransaction:
+            msg = @"您还有物品未发货成功";
         default:
             break;
     }
     
-     NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:JKIAPError_NotRegistered userInfo:@{NSLocalizedDescriptionKey : msg}];
+     NSError *error = [NSError errorWithDomain:JKIAPErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey : msg}];
     return  error;
 }
 @end
