@@ -24,7 +24,6 @@ static BOOL _enableLoading = YES;
         NSString* log = [[NSString alloc]initWithFormat:format arguments:paramList];
         va_end(paramList);
         NSString *result = [@"[JKIAP]:" stringByAppendingString:log];
-        NSLog(@"%@",result);
         if ([JKIAPManager sharedManager].delegate && [[JKIAPManager sharedManager].delegate respondsToSelector:@selector(JKIAPLog:)]) {
             [[JKIAPManager sharedManager].delegate JKIAPLog:result];
         }

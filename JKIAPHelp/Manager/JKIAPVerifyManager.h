@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @return model
  */
-- (NSMutableSet <JKIAPTransactionModel *>*)fetchAllPaymentTransactionModel;
+- (NSMutableArray <JKIAPTransactionModel *>*)fetchAllPaymentTransactionModel;
 
 /**
  * 添加需要验证的 model.
@@ -64,6 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updatePaymentTransactionModelStatus:(JKIAPTransactionModel *)transactionModel;
 
 
+/// 移除当前验证model
+/// @param transactionModel model
+- (void)finishPaymentTransactionVerifingModel:(JKIAPTransactionModel *)transactionModel;
 
 
 /**
@@ -79,6 +82,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cleanAllModels;
 
 
+/// 覆盖存档
+/// @param models JKIAPTransactionModels
+- (void)savePaymentTransactionModels:(NSArray <JKIAPTransactionModel *>*)models;
 @end
 
 NS_ASSUME_NONNULL_END

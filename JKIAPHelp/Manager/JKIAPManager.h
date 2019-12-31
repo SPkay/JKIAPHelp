@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param productIdentifiers 产品标识.
  */
-- (void)fetchProductInfoWithProductIdentifiers:(NSSet<NSString *> *)productIdentifiers;
+- (void)fetchProductInfoWithProductIdentifier:(NSString *)productIdentifier;
 
 
 /**
@@ -98,6 +98,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 检测未完成订单
 -(void)checkUnfinishTransaction;
+
+
+
+/// 重写本地票据到JKIAP
+/// @param keychainService 钥匙串
+/// @param keychainAccount 钥匙串
+/// @param models 钥匙串
+- (void)resetKeychainService:( NSString *_Nullable)keychainService
+             keychainAccount:( NSString *_Nullable)keychainAccount JKIAPTransactionModels:(NSArray<JKIAPTransactionModel *>*)models;
 
 @end
 

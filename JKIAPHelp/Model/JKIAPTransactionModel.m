@@ -75,7 +75,7 @@
     NSError *error = nil;
     NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
-    if (!error) {
+    if (!error && [JKIAPInfo isKindOfClass:[NSDictionary class]]) {
         model.priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
         model.seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
         model.userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
@@ -148,7 +148,7 @@
       NSError *error = nil;
         NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
-        if (!error) {
+        if (!error && [JKIAPInfo isKindOfClass:[NSDictionary class]]) {
             _priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
             _seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
             _userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];

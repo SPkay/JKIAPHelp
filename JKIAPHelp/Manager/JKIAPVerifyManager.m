@@ -53,7 +53,7 @@
 - (void)appendPaymentTransactionModel:(JKIAPTransactionModel *)transactionModel{
     //取出
     
-   NSMutableSet *keychainSet = [self fetchAllPaymentTransactionModel];
+   NSMutableArray *keychainSet = [self fetchAllPaymentTransactionModel];
     for (JKIAPTransactionModel *model in keychainSet) {
         if ([model isEqual:transactionModel]) {
             return;
@@ -78,9 +78,11 @@
     }
 
    __block JKIAPTransactionModel *resultModel= transactionModel;
-     NSMutableSet *keychainSet = [self fetchAllPaymentTransactionModel];
+     NSMutableArray *keychainSet = [self fetchAllPaymentTransactionModel];
     
-    [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
+
+    
+    [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
         
        
         
@@ -122,8 +124,8 @@
 }
 -(void)updatePaymentTransactionModelStatus:(JKIAPTransactionModel *)transactionModel{
     
-      NSMutableSet *keychainSet = [self fetchAllPaymentTransactionModel];
-    [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
+      NSMutableArray *keychainSet = [self fetchAllPaymentTransactionModel];
+    [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
         if ([model isEqual:transactionModel]) {
             model.transactionStatus= transactionModel.transactionStatus;
             if (transactionModel.error) {
@@ -135,14 +137,24 @@
     [self savePaymentTransactionModels:keychainSet];
 }
 
+- (void)finishPaymentTransactionVerifingModel:(JKIAPTransactionModel *)transactionModel{
+    for (JKIAPTransactionModel *model in _modelArray) {
+        if ([model.transactionIdentifier isEqualToString:transactionModel.transactionIdentifier]) {
+            [_modelArray removeObject:model];
+            break;
+        }
+    }
+       self.isVerifing = NO;
+}
+
 /**
  * 删除失败 model.
  */
 - (void)deletePaymentTransactionModel:(JKIAPTransactionModel *)transactionModel{
-    NSMutableSet *keychainSet =[self fetchAllPaymentTransactionModel];
+    NSMutableArray *keychainSet =[self fetchAllPaymentTransactionModel];
    
     NSInteger count = keychainSet.count;
-    [keychainSet enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(JKIAPTransactionModel*  _Nonnull model, BOOL * _Nonnull stop) {
+    [keychainSet enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
         if ([model isEqual:transactionModel]) {
             [keychainSet removeObject:model];
                JKIAPLog(@"完成删除订单:%@",transactionModel);
@@ -181,33 +193,32 @@
 
  @return model
  */
-- (NSMutableSet <JKIAPTransactionModel *>*)fetchAllPaymentTransactionModel{
+- (NSMutableArray <JKIAPTransactionModel *>*)fetchAllPaymentTransactionModel{
     
         NSData *keychainData = [SAMKeychain passwordDataForService:_keychain_service account:_keychain_account];
-        NSMutableSet *keychainSet= [NSMutableSet new];
+         NSMutableArray *mutableArray =[NSMutableArray new];
         if (keychainData) {
-            NSSet *  keychainSetData= (NSSet *)[NSKeyedUnarchiver unarchiveObjectWithData:keychainData];
+            NSArray *  keychainSetData= (NSArray *)[NSKeyedUnarchiver unarchiveObjectWithData:keychainData];
             for (NSData *data in keychainSetData) {
                 JKIAPTransactionModel *model = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-                [keychainSet addObject:model];
+                [mutableArray addObject:model];
             }
         }
-        JKIAPLog(@"当前获取的存档;%@",keychainSet);
-        return keychainSet;
-    
-   
-    
+      
+        JKIAPLog(@"当前获取的存档;%@",mutableArray);
+        return mutableArray;
 }
 
-- (void)savePaymentTransactionModels:(NSSet <JKIAPTransactionModel *>*)models{
+- (void)savePaymentTransactionModels:(NSArray <JKIAPTransactionModel *>*)models{
     
-    NSMutableSet *saveSet =[NSMutableSet new];
+
+    NSMutableArray *mutableArray =[NSMutableArray new];
     for (JKIAPTransactionModel *model in models) {
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:model];
-        [saveSet addObject:data];
+        [mutableArray addObject:data];
     }
-    
-        NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:saveSet];
+
+        NSData *saveData = [NSKeyedArchiver archivedDataWithRootObject:mutableArray];
     NSError *error = nil;
     BOOL result=  NO;
     

@@ -10,7 +10,9 @@
 
 
 @interface   JKIAPActivityIndicator()
-
+{
+    UIWindow *_window;
+}
 @property (nonatomic, strong) UIActivityIndicatorView *actIndicatorView;
   @property (nonatomic, strong)  UIVisualEffectView *activitybackView;
    @property (nonatomic, strong) UILabel *label;
@@ -32,7 +34,9 @@
  * 活动指示器弹出框开始
  */
 - (void)showActivityWithMessage:(NSString *)msg{
-    dispatch_async(dispatch_get_main_queue(), ^{
+   
+    
+         _window.hidden = NO;
             if (msg) {
                 self.label.text = msg;
                   }
@@ -47,29 +51,29 @@
                self.backView.alpha = 1;
            }];
           
-       });
-   
+      
 }
 
 /**
  * 活动指示器弹出框结束
  */
 - (void)stop{
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-        [UIView animateWithDuration:0.5 animations:^{
+ 
+        [self.actIndicatorView stopAnimating];
+        [UIView animateWithDuration:0.2 animations:^{
             self.backView.alpha = 0;
-        } completion:^(BOOL finished) {
             [self.backView removeFromSuperview];
-            [self.actIndicatorView stopAnimating];
+            _window.hidden = YES;
+        } completion:^(BOOL finished) {           
         }];
-    
-    });
-  
+   
 }
 
 - (void)creatViews{
-    if (!_backView) {
+    if (!_window) {
+        
+        _window = [UIWindow new];
+        _window.backgroundColor = UIColor.clearColor;
         _backView = [UIView new];
         
         _backView.userInteractionEnabled = YES;
@@ -96,7 +100,7 @@
 
 - (void)layoutViews{
     
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    UIWindow *keyWindow = _window;
     if (![keyWindow.subviews containsObject:_backView]) {
 
         [keyWindow addSubview:_backView];

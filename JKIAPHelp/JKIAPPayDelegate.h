@@ -17,7 +17,7 @@ typedef enum : NSUInteger {
     JKIAPVerifyFailed = 0,//验证请求网络错误
     JKIAPVerifyValid,//票据有效
     JKIAPVerifyInvalid,//票据无效
-    
+    JKIAPVerifyNeedRefreshReceipt ,//票据异常
 } JKIAPVerifyResult;
 
 typedef enum : NSUInteger {
@@ -49,12 +49,12 @@ typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
 - (void)currentStatus:(JKIAPLoadingStatus)status;
 
 /**
- 获取苹果商店信息成功
+ 获取苹果商店信息
 
  @param products 商店物品
  @param error 错误信息
  */
--(void)onLaunProductListFinish:(NSArray<SKProduct *>*)products withError:(NSError*)error;
+-(void)onLaunProductListFinish:(SKProduct *)products withError:(NSError*)error;
 
 
 /**
@@ -70,6 +70,10 @@ typedef void(^VerifyRsultBlock)(JKIAPVerifyResult result);
 
  @param model 交易模型
  @param error 错误信息
+ (如果是JKIAPError_HasUnfinishedTransaction,需要调用
+ [[JKIAPManager sharedManager] checkUnfinishTransaction]]
+ 来触发补单流程
+ )
  */
 -(void)onIAPPayFailue:(JKIAPTransactionModel*)model  withError:(NSError*)error;
 

@@ -68,7 +68,7 @@
 - (void)onIAPPayFailue:(JKIAPTransactionModel *)model withError:(NSError *)error{
     NSString *log =[NSString stringWithFormat:@"demo--购买失败%@,订单号%@",error.localizedDescription,model];
     
-    if (error.code == 110) {
+    if (error.code == JKIAPError_HasUnfinishedTransaction) {
         [[JKIAPManager sharedManager] checkUnfinishTransaction];
     }
     NSLog(@"%@",log);

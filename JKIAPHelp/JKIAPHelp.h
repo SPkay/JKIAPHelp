@@ -11,3 +11,4 @@
 #import "JKIAPPayDelegate.h"
 #import "JKIAPActivityIndicatorProtocol.h"
 #import "JKIAPVerifyManager.h"
+#import "NSError+JKIAPError.h"
