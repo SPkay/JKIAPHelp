@@ -63,7 +63,7 @@
         [UIView animateWithDuration:0.2 animations:^{
             self.backView.alpha = 0;
             [self.backView removeFromSuperview];
-            _window.hidden = YES;
+            self->_window.hidden = YES;
         } completion:^(BOOL finished) {           
         }];
    

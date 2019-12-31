@@ -784,7 +784,12 @@ static  JKIAPManager *manager = nil;
 
 - (void)sendDelegateErrorMethod:(SEL)sel error:(NSError *)error{
     if (self.delegate && [self.delegate respondsToSelector:sel]) {
-           [self.delegate performSelector:sel withObject:nil withObject:error];
+        
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [self.delegate performSelector:sel withObject:nil withObject:error];
+        #pragma clang diagnostic pop
+     
     }
  
 }
