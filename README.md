@@ -51,7 +51,10 @@
 -(void)onRedistributeGoodsFailue:(JKIAPTransactionModel*)model withError:(NSError *)error;
 ```
  4. 注册
- `[[JKIAPManager sharedManager] registerPayWithUserID:@"userOne"];`
+ ```[[JKIAPManager sharedManager] registerPayWithUserID:@"userOne"];```
  5. 购买
- `  [[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"com.objId.com" appproductType:AppleProductType_Consumable orderId:@"orderId"];`
+ 方法1 
+```[[JKIAPManager sharedManager] buyProductWithProductIdentifier:@"com.objId.com" appproductType:AppleProductType_Consumable orderId:@"orderId"];```
+ 方法2
+```- (void)buyProductWithSKPayment:(SKPayment  *)payment;```
  

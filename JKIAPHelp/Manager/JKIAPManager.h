@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * 获取产品信息.
  *
- * @param productIdentifiers 产品标识.
+ * @param productIdentifier 产品标识.
  */
 - (void)fetchProductInfoWithProductIdentifier:(NSString *)productIdentifier;
 
