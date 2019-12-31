@@ -19,8 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *accountField;
 @property (nonatomic, strong) NSMutableArray *logArray;
 @end
-#define NonConsumable @"com.rayark.cytus2.bundle004"
-#define Consumable @"com.rayark.cytus2.bundle004"
+#define NonConsumable @"com.productId"
+#define Consumable @"com.productId"
 @implementation ViewController
 
 - (void)viewDidLoad {
