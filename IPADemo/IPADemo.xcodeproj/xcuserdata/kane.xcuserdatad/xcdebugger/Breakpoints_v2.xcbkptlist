@@ -224,7 +224,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "618"
             endingLineNumber = "618"
-            landmarkName = "-finishTransationWithModel:"
+            landmarkName = "-paymentQueue:restoreCompletedTransactionsFailedWithError:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

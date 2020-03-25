@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /* 活动指示器,如果没有就使用默认的 */
 @property (nonatomic,strong)id<JKIAPActivityIndicatorProtocol> activityIndicatorController;
+
 /**
  * 单例方法.
  */
@@ -99,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 检测未完成订单
 -(void)checkUnfinishTransaction;
 
-
+- (NSArray *)getUnfinishTransactions;
 
 /// 重写本地票据到JKIAP
 /// @param keychainService 钥匙串

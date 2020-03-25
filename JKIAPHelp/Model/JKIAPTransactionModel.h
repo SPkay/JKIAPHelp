@@ -11,6 +11,7 @@
 
 typedef NS_ENUM(NSUInteger, TransactionStatus) {
     TransactionStatusWaitApple,
+    TransactionStatusAppleCancel,
     TransactionStatusAppleFailed,
     TransactionStatusAppleSucc,
     TransactionStatusSeriverError,
@@ -62,6 +63,9 @@ typedef NS_ENUM(NSUInteger, TransactionStatus) {
  */
 @property (nonatomic, strong) NSError *error;
 
+
+/// 检测次数,如果在
+@property (nonatomic, assign) NSInteger cancelStatusCheckCount;
 
 /* 以下属性,只有使用订单号参数购买方式:
  - (void)buyProductWithUserID:(NSString *)userid

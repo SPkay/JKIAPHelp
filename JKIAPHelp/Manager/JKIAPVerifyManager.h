@@ -57,12 +57,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- 更新model
+ 更新model状态
 
  @param transactionModel model
  */
 - (void)updatePaymentTransactionModelStatus:(JKIAPTransactionModel *)transactionModel;
 
+
+/// 更新model检测次数
+/// @param transactionModel model
+-(void)updatePaymentTransactionCheckCount:(JKIAPTransactionModel *)transactionModel;
 
 /// 移除当前验证model
 /// @param transactionModel model

@@ -82,7 +82,7 @@
     
 
     
-    [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
+    [keychainSet enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
         
        
         
@@ -115,17 +115,28 @@
         //保存更改
         [self savePaymentTransactionModels:keychainSet];
         
-        [_modelArray addObject:transactionModel];
+        [_modelArray addObject:resultModel];
         //开始验证
         [self verifingModel:resultModel];
     
    
   
 }
+-(void)updatePaymentTransactionCheckCount:(JKIAPTransactionModel *)transactionModel{
+    
+      NSMutableArray *keychainSet = [self fetchAllPaymentTransactionModel];
+    [keychainSet enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([model isEqual:transactionModel]) {
+            model.cancelStatusCheckCount= transactionModel.cancelStatusCheckCount;
+            *stop = YES;
+        }
+    }];
+    [self savePaymentTransactionModels:keychainSet];
+}
 -(void)updatePaymentTransactionModelStatus:(JKIAPTransactionModel *)transactionModel{
     
       NSMutableArray *keychainSet = [self fetchAllPaymentTransactionModel];
-    [keychainSet enumerateObjectsUsingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
+    [keychainSet enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(JKIAPTransactionModel*  _Nonnull model,NSUInteger idx, BOOL * _Nonnull stop) {
         if ([model isEqual:transactionModel]) {
             model.transactionStatus= transactionModel.transactionStatus;
             if (transactionModel.error) {

@@ -19,7 +19,7 @@
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"yyyy-MM-dd hh:mm:ss";
     NSString *dateString = [formatter stringFromDate:self.transactionDate];
-    return [NSString stringWithFormat:@"productIdentifier: %@, transactionIdentifier: %@, transactionDate: %@,applicationUsername :%@, transactionStatus: %lu", self.productIdentifier, self.transactionIdentifier, dateString,self.applicationUsername, (unsigned long)self.transactionStatus];
+    return [NSString stringWithFormat:@"productIdentifier: %@, transactionIdentifier: %@, transactionDate: %@,applicationUsername :%@, transactionStatus: %lu,cancelStatusCheckCount:%d", self.productIdentifier, self.transactionIdentifier, dateString,self.applicationUsername, (unsigned long)self.transactionStatus,self.cancelStatusCheckCount];
 }
 
 
@@ -38,6 +38,7 @@
         _transactionStatus = [aDecoder decodeIntegerForKey:@"transactionStatus"];
         _appStoreReceipt = [aDecoder decodeObjectForKey:@"appStoreReceipt"];
         _error = [aDecoder decodeObjectForKey:@"error"];
+        _cancelStatusCheckCount = [[aDecoder decodeObjectForKey:@"cancelStatusCheckCount"] integerValue];
     }
     return self;
 }
@@ -55,6 +56,7 @@
     
     [aCoder encodeInteger:self.transactionStatus forKey:@"transactionStatus"];
      [aCoder encodeObject:self.error forKey:@"error"];
+      [aCoder encodeObject:@(self.cancelStatusCheckCount) forKey:@"cancelStatusCheckCount"];
 }
 
 
@@ -64,25 +66,30 @@
     NSParameterAssert(productIdentifier);
        //NSParameterAssert(orderId);
     
-  JKIAPTransactionModel*model = [JKIAPTransactionModel new];
+    JKIAPTransactionModel*model = [JKIAPTransactionModel new];
           model.productIdentifier = productIdentifier;
           
           model.applicationUsername = applicationUsername;
          
           model.transactionStatus = 0;
           model.transactionDate = [NSDate date];
- 
-    NSError *error = nil;
-    NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
-    if (!error && [JKIAPInfo isKindOfClass:[NSDictionary class]]) {
-        model.priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
-        model.seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
-        model.userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
-    }
 
     
-      
+    if (applicationUsername) {
+         NSError *error = nil;
+        
+           NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+        if (data) {
+            NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+                     
+                     if (!error && [JKIAPInfo isKindOfClass:[NSDictionary class]]) {
+                         model.priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
+                         model.seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
+                         model.userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
+                     }
+        }
+         
+    }
        return model;
 }
 
@@ -144,15 +151,21 @@
 }
 
 - (void)setApplicationUsername:(NSString *)applicationUsername{
+   
     _applicationUsername = applicationUsername;
-      NSError *error = nil;
-        NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
-        if (!error && [JKIAPInfo isKindOfClass:[NSDictionary class]]) {
-            _priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
-            _seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
-            _userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
+    if (applicationUsername !=nil) {
+           NSError *error = nil;
+                 NSData *data = [applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+        if (data) {
+            NSDictionary *JKIAPInfo = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:&error];
+                            if (!error && [JKIAPInfo isKindOfClass:[NSDictionary class]]) {
+                                _priceString = [JKIAPInfo objectForKey:@"JKIAP_Price"];
+                                _seriverOrder =  [JKIAPInfo objectForKey:@"JKIAP_OrderID"];
+                                _userId =  [JKIAPInfo objectForKey:@"JKIAP_UserId"];
+                            }
         }
+                
+       }
 }
 
 
